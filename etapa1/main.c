@@ -1,8 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//lex.yy.h
+int yylex();
+
+
+
 int main(){
 
-	printf("HEY");
+	yylex();
+
+
 	return 1;
 }

@@ -1736,6 +1736,7 @@ void yyfree (void * ptr )
 #line 7 "scanner.l"
 
 
-#include "main.c"
 
-
+int yywrap(){
+	return 1;
+}
