@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "tokens.h" //Esse include não deve gerar problemas na correção pois não é necessário para a compilação dos outros arquivos
+//Eu imagino que esses includes não devem gerar problemas na correção p
+//pois não estão afetando a compilação:
+#include "tokens.h" 
+#include "hash.c"
 
 //Essas funções estão no scanner.l:
 int isRunning(void);
@@ -37,6 +40,29 @@ int main(){
 				case KW_PRINT:{printf("Palavra Reservada: print\n");break;}
 				case KW_RETURN:{printf("Palavra Reservada: return\n");break;}
 
+				//Caracteres Especiais
+				case 44:{printf("Caracter Especial: ,\n");break;}
+				case 59:{printf("Caracter Especial: ;\n");break;}
+				case 58:{printf("Caracter Especial: :\n");break;}
+				case 40:{printf("Caracter Especial: (\n");break;}
+				case 41:{printf("Caracter Especial: )\n");break;}
+				case 91:{printf("Caracter Especial: [\n");break;}
+				case 93:{printf("Caracter Especial: ]\n");break;}
+				case 123:{printf("Caracter Especial: {\n");break;}
+				case 125:{printf("Caracter Especial: }\n");break;}
+				case 43:{printf("Caracter Especial: +\n");break;}
+				case 45:{printf("Caracter Especial: -\n");break;}
+				case 42:{printf("Caracter Especial: *\n");break;}
+				case 47:{printf("Caracter Especial: /\n");break;}
+				case 60:{printf("Caracter Especial: <\n");break;}
+				case 62:{printf("Caracter Especial: >\n");break;}
+				case 124:{printf("Caracter Especial: |\n");break;}
+				case 38:{printf("Caracter Especial: &\n");break;}
+				case 126:{printf("Caracter Especial: ~\n");break;}
+				case 36:{printf("Caracter Especial: $\n");break;}
+				case 35:{printf("Caracter Especial: #\n");break;}
+				
+				
 
 				case TOKEN_ERROR:{printf("ERRO - Token Inesperado: %c\n",yytext[0]);break;}
 				default:{printf("Caso Default - Foi Encontrado: %c\n",yytext[0]);}
