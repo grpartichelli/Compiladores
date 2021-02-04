@@ -2,7 +2,7 @@
 
 %%
 
-aba {printf("HEYS");}
+int {printf("HEYS");}
 
 %%
 

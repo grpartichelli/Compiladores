@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//lex.yy.h
-int yylex();
+int yylex();  //lex.yy.h, evita que o compilador avise que essa função não foi declarada
 
 
 
