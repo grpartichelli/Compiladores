@@ -51,11 +51,13 @@ void putHash(int type,char *content){
 
 	if(!(n = getHash(content))){
 		//Inicializando novo nodo
-		n->type = type;
+		
 		n = (node*) calloc(1,sizeof(node));
 		n->content = (char*) calloc(strlen(content)+1,sizeof(char));
 		
+		n->type = type;
 		strcpy(n->content,content);
+		
 		int pos = getAddress(content);
 		n->next = hash_table[pos];
 		hash_table[pos] = n;
