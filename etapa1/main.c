@@ -4,7 +4,7 @@
 //Eu imagino que esses includes não devem gerar problemas na correção p
 //pois não estão afetando a compilação:
 #include "tokens.h" 
-#include "hash.c"
+#include "hash.h"
 
 //Essas funções estão no scanner.l:
 int isRunning(void);
@@ -100,7 +100,7 @@ int main(int argc, char **argv){
 	}
 
 	printf("Número de Linhas: %d\n",getLineNumber());
-
+	printHash();
 
 	exit(0);
 }
