@@ -62,7 +62,13 @@ int main(){
 				case 36:{printf("Caracter Especial: $\n");break;}
 				case 35:{printf("Caracter Especial: #\n");break;}
 				
-				
+				//Operadores Compostos
+				case OPERATOR_LE:{printf("Operador Composto: <=\n");break;}
+				case OPERATOR_GE:{printf("Operador Composto: >=\n");break;}
+				case OPERATOR_EQ:{printf("Operador Composto: ==\n");break;}
+				case OPERATOR_DIF:{printf("Operador Composto: !=\n");break;}
+				case LEFT_ASSIGN:{printf("Operador Composto: <-\n");break;}
+				case RIGHT_ASSIGN:{printf("Operador Composto: ->\n");break;}
 
 				case TOKEN_ERROR:{printf("ERRO - Token Inesperado: %c\n",yytext[0]);break;}
 				default:{printf("Caso Default - Foi Encontrado: %c\n",yytext[0]);}

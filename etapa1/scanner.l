@@ -20,6 +20,15 @@
 
 [-,;:()\[\]\{\}+*\/<>|&~$#] {return yytext[0];}
 
+[\t ]
+
+"<=" {return OPERATOR_LE;}
+">=" {return OPERATOR_GE;}
+"==" {return OPERATOR_EQ;}
+"!=" {return OPERATOR_DIF;}
+"<-" {return LEFT_ASSIGN;}
+"->" {return RIGHT_ASSIGN;}
+
 . {return TOKEN_ERROR;}
 %%
 
