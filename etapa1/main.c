@@ -9,6 +9,7 @@
 //Essas funções estão no scanner.l:
 int isRunning(void);
 void initMe(void);
+int getLineNumber(void);
 
 //Importando algumas funções do lex.yy.h, que é gerado usamos "lex scanner.l"
 int yylex();  
@@ -26,6 +27,7 @@ int main(){
 		token = yylex();
 		
 		if(isRunning()){ //Testa novamente pois é possivel que tenha sido o end of file
+			printf("Linha: %d - ", getLineNumber());
 			switch(token){
 				//Palavras Reservadas:
 				case KW_CHAR:{printf("Palavra Reservada: char\n");break;}
@@ -70,8 +72,18 @@ int main(){
 				case LEFT_ASSIGN:{printf("Operador Composto: <-\n");break;}
 				case RIGHT_ASSIGN:{printf("Operador Composto: ->\n");break;}
 
+				//Identificador
+				case TK_IDENTIFIER:{printf("Identificador: %s\n",yytext);break;}
+
+				//Literais
+				case LIT_INTEGER:{printf("Literal Inteiro: %s\n",yytext);break;}
+				case LIT_CHAR:{printf("Literal Char: %s\n",yytext);break;}
+				case LIT_STRING:{printf("Literal String: %s\n",yytext);break;}
+				case LIT_TRUE:{printf("Literal True: true");break;}
+				case LIT_FALSE:{printf("Literal False: false");break;}
+
 				case TOKEN_ERROR:{printf("ERRO - Token Inesperado: %c\n",yytext[0]);break;}
-				default:{printf("Caso Default - Foi Encontrado: %c\n",yytext[0]);}
+				default:{printf("Case Default Foi Encontrado: %s\n",yytext);}
 			}
 		}
 	}

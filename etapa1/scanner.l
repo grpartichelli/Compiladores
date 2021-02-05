@@ -18,6 +18,9 @@
 "print" {return KW_PRINT;}
 "return" {return KW_RETURN; }
 
+"true"	{return LIT_TRUE;}
+"false"	{return LIT_FALSE;}
+
 [-,;:()\[\]\{\}+*\/<>|&~$#] {return yytext[0];}
 
 [\t ]
@@ -28,6 +31,14 @@
 "!=" {return OPERATOR_DIF;}
 "<-" {return LEFT_ASSIGN;}
 "->" {return RIGHT_ASSIGN;}
+
+[a-zA-Z_][0-9a-zA-Z_]* {return TK_IDENTIFIER;}
+
+[0-9]+ {return LIT_INTEGER;}
+"'"."'" {return LIT_CHAR;}
+\"(\\.|[^\\"])*\" {return LIT_STRING;}
+
+"\n" {numLines++;}
 
 . {return TOKEN_ERROR;}
 %%
@@ -47,5 +58,7 @@ void initMe(void){
 	return;
 }
 
-
+int getLineNumber(void){
+	return numLines;
+}
 
