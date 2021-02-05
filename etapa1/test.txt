@@ -1,0 +1,4 @@
+ola
+int amor==3;
+string "teste" "\"" "\n"
+21312321321 21321321

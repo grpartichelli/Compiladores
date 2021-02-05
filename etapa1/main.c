@@ -17,7 +17,16 @@ extern char *yytext;
 extern FILE *yyin;
 
 
-int main(){
+int main(int argc, char **argv){
+
+	if(argc != 2){
+		printf("Número errado de argumentos, chame como ./etapa1 arquivo_de_entrada");
+		exit(1);
+	}
+
+	if(!(yyin = fopen(argv[1],"r"))){
+		printf("Não foi possivel abrir o arquivo de entrada %s",argv[1]);
+	}
 
 	int token;
 	initMe(); //Inicialização da tabela hash
@@ -82,11 +91,14 @@ int main(){
 				case LIT_TRUE:{printf("Literal True: true");break;}
 				case LIT_FALSE:{printf("Literal False: false");break;}
 
+				//Error
 				case TOKEN_ERROR:{printf("ERRO - Token Inesperado: %c\n",yytext[0]);break;}
 				default:{printf("Case Default Foi Encontrado: %s\n",yytext);}
 			}
 		}
 	}
+
+	printf("Número de Linhas: %d\n",getLineNumber());
 
 
 	exit(0);

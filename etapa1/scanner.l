@@ -1,8 +1,10 @@
 %{
 	#include "tokens.h"
-	int numLines=0;
+	int numLines=1;
 	int running=1;
 %}
+
+%x MULTI_LINE_COMMENT
 
 %%
 
@@ -23,7 +25,7 @@
 
 [-,;:()\[\]\{\}+*\/<>|&~$#] {return yytext[0];}
 
-[\t ]
+[ \t]
 
 "<=" {return OPERATOR_LE;}
 ">=" {return OPERATOR_GE;}
@@ -39,6 +41,14 @@
 \"(\\.|[^\\"])*\" {return LIT_STRING;}
 
 "\n" {numLines++;}
+
+"//".*
+
+"/*" {BEGIN(MULTI_LINE_COMMENT);}
+<MULTI_LINE_COMMENT>"*/" {BEGIN(INITIAL);}
+<MULTI_LINE_COMMENT>"\n" {numLines++;}
+<MULTI_LINE_COMMENT>. 
+
 
 . {return TOKEN_ERROR;}
 %%
