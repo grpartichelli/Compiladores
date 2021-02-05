@@ -20,12 +20,13 @@ extern FILE *yyin;
 int main(int argc, char **argv){
 
 	if(argc != 2){
-		printf("Número errado de argumentos, chame como ./etapa1 arquivo_de_entrada");
+		printf("Número errado de argumentos, chame como ./etapa1 arquivo_de_entrada\n");
 		exit(1);
 	}
 
 	if(!(yyin = fopen(argv[1],"r"))){
-		printf("Não foi possivel abrir o arquivo de entrada %s",argv[1]);
+		printf("Não foi possivel abrir o arquivo de entrada %s\n",argv[1]);
+		exit(1);
 	}
 
 	int token;
@@ -88,8 +89,8 @@ int main(int argc, char **argv){
 				case LIT_INTEGER:{printf("Literal Inteiro: %s\n",yytext);break;}
 				case LIT_CHAR:{printf("Literal Char: %s\n",yytext);break;}
 				case LIT_STRING:{printf("Literal String: %s\n",yytext);break;}
-				case LIT_TRUE:{printf("Literal True: true");break;}
-				case LIT_FALSE:{printf("Literal False: false");break;}
+				case LIT_TRUE:{printf("Literal True: true\n");break;}
+				case LIT_FALSE:{printf("Literal False: false\n");break;}
 
 				//Error
 				case TOKEN_ERROR:{printf("ERRO - Token Inesperado: %c\n",yytext[0]);break;}
