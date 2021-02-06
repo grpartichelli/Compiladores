@@ -17,7 +17,7 @@ void printHash(){
 
 	for(int i=0;i<TABLE_SIZE;i++){
 		for(n = hash_table[i]; n; n = n->next){
-			printf("Hash Pos: %d - Valor: %s\n",i,n->content);
+			printf("Hash Pos: %d - Valor: %s - Tipo %d\n",i,n->content,n->type);
 		}
 	}
 }
