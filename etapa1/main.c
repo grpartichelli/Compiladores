@@ -23,11 +23,12 @@ int main(int argc, char **argv){
 		printf("Número errado de argumentos, chame como ./etapa1 arquivo_de_entrada\n");
 		exit(1);
 	}
-
+	
 	if(!(yyin = fopen(argv[1],"r"))){
 		printf("Não foi possivel abrir o arquivo de entrada %s\n",argv[1]);
 		exit(1);
 	}
+
 
 	int token;
 	initMe(); //Inicialização da tabela hash

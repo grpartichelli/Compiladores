@@ -39,7 +39,7 @@
 
 [0-9]+ {putHash(LIT_INTEGER,yytext);return LIT_INTEGER;}
 "'"."'" {putHash(LIT_CHAR,yytext);return LIT_CHAR;}
-\"(\\.|[^\\"])*\" {putHash(LIT_STRING,yytext);return LIT_STRING;}
+\"(\\.|[^"\\\n])*\" {putHash(LIT_STRING,yytext);return LIT_STRING;}
 
 "\n" {numLines++;}
 
