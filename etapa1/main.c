@@ -1,3 +1,6 @@
+//Código de Gabriel Rizzolli Partichelli - 301416
+
+
 #include <stdio.h>
 #include <stdlib.h>
 

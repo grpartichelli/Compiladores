@@ -1,7 +1,7 @@
 
 
 %{
-	#include "tokens.h"
+	#include "y.tab.h" 
 	#include "hash.h"
 	int numLines=1;
 	int running=1;
