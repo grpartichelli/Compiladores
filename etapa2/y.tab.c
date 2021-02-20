@@ -20,7 +20,9 @@
 #line 2 "parser.y"
 #include <stdio.h>
 #include <stdlib.h>
-#line 24 "y.tab.c"
+int getLineNumber();
+int yylex();
+#line 26 "y.tab.c"
 
 #if ! defined(YYSTYPE) && ! defined(YYSTYPE_IS_DECLARED)
 /* Default: YYSTYPE is the semantic value type. */
@@ -86,30 +88,30 @@ extern int YYPARSE_DECL();
 #define YYERRCODE 256
 typedef short YYINT;
 static const YYINT yylhs[] = {                           -1,
-    0,    0,
+    0,    0,    0,
 };
 static const YYINT yylen[] = {                            2,
-    1,    1,
+    2,    2,    0,
 };
 static const YYINT yydefred[] = {                         0,
-    1,    2,    0,
+    0,    0,    0,    1,    2,
 };
 static const YYINT yydgoto[] = {                          3,
 };
 static const YYINT yysindex[] = {                      -274,
-    0,    0,    0,
+ -274, -274,    0,    0,    0,
 };
-static const YYINT yyrindex[] = {                         0,
-    0,    0,    0,
+static const YYINT yyrindex[] = {                         4,
+    4,    4,    0,    0,    0,
 };
-static const YYINT yygindex[] = {                         0,
+static const YYINT yygindex[] = {                         1,
 };
-#define YYTABLESIZE 1
+#define YYTABLESIZE 4
 static const YYINT yytable[] = {                          1,
-    2,
+    2,    4,    5,    3,
 };
 static const YYINT yycheck[] = {                        274,
-  275,
+  275,    1,    2,    0,
 };
 #define YYFINAL 3
 #ifndef YYDEBUG
@@ -135,8 +137,9 @@ static const char *const yyname[] = {
 };
 static const char *const yyrule[] = {
 "$accept : programa",
-"programa : TK_IDENTIFIER",
-"programa : LIT_INTEGER",
+"programa : TK_IDENTIFIER programa",
+"programa : LIT_INTEGER programa",
+"programa :",
 
 };
 #endif
@@ -174,14 +177,14 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 45 "parser.y"
+#line 48 "parser.y"
 
 int yyerror(){
 	
-	printf("Erro de sintaxe.\n");
+	printf("Erro de sintaxe na linha %d\n",getLineNumber());
 	exit(3);
 }
-#line 185 "y.tab.c"
+#line 188 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */

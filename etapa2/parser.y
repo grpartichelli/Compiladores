@@ -1,6 +1,8 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+int getLineNumber();
+int yylex();
 %}
 
 %token KW_CHAR       
@@ -37,14 +39,15 @@
 
 %%
 
-programa: TK_IDENTIFIER 
-		| LIT_INTEGER
+programa: TK_IDENTIFIER programa
+		| LIT_INTEGER programa
+		|
 		;
 
 %%
 
 int yyerror(){
 	
-	printf("Erro de sintaxe.\n");
+	printf("Erro de sintaxe na linha %d\n",getLineNumber());
 	exit(3);
 }
