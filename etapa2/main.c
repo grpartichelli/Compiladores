@@ -42,5 +42,7 @@ int main(int argc, char **argv){
 	printf("Número de Linhas: %d\n",getLineNumber());
 	printHash();
 
+	printf("Compilação concluida com sucesso.\n");
+
 	exit(0);
 }

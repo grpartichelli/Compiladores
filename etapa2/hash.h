@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+//TIPOS
+#define SYMBOL_LIT_INT 1
+#define SYMBOL_LIT_CHAR 2
+#define SYMBOL_LIT_STRING 3
+#define SYMBOL_IDENTIFIER 4
+
 typedef struct node
 {
 	int type;

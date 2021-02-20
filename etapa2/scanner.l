@@ -26,7 +26,7 @@
 "true"	{return LIT_TRUE;}
 "false"	{return LIT_FALSE;}
 
-[-,;:()\[\]\{\}+*\/<>|&~$#] {return yytext[0];}
+[-,=;:()\[\]\{\}+*\/<>|&~$#] {return yytext[0];}
 
 [ \t]
 
@@ -37,11 +37,11 @@
 "<-" {return LEFT_ASSIGN;}
 "->" {return RIGHT_ASSIGN;}
 
-[a-zA-Z_][0-9a-zA-Z_]* {putHash(TK_IDENTIFIER,yytext);return TK_IDENTIFIER;}
+[a-zA-Z_][0-9a-zA-Z_]* {putHash(SYMBOL_IDENTIFIER,yytext);return TK_IDENTIFIER;}
 
-[0-9]+ {putHash(LIT_INTEGER,yytext);return LIT_INTEGER;}
-"'"."'" {putHash(LIT_CHAR,yytext);return LIT_CHAR;}
-\"(\\.|[^"\\\n])*\" {putHash(LIT_STRING,yytext);return LIT_STRING;}
+[0-9]+ {putHash(SYMBOL_LIT_INT,yytext);return LIT_INTEGER;}
+"'"."'" {putHash(SYMBOL_LIT_CHAR,yytext);return LIT_CHAR;}
+\"(\\.|[^"\\\n])*\" {putHash(SYMBOL_LIT_STRING,yytext);return LIT_STRING;}
 
 "\n" {numLines++;}
 

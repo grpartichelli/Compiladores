@@ -363,7 +363,7 @@ struct yy_trans_info
 static const flex_int16_t yy_accept[93] =
     {   0,
         0,    0,    0,    0,   34,   32,   15,   26,   32,   32,
-       14,   32,   14,   14,   23,   14,   32,   14,   22,   22,
+       14,   32,   14,   14,   23,   14,   14,   14,   22,   22,
        22,   22,   22,   22,   22,   22,   22,   22,   31,   30,
        31,   19,    0,   25,    0,    0,   21,   28,   27,   23,
        20,   16,   18,   17,   22,   22,   22,   22,   22,    5,
@@ -893,22 +893,22 @@ YY_RULE_SETUP
 case 22:
 YY_RULE_SETUP
 #line 40 "scanner.l"
-{putHash(TK_IDENTIFIER,yytext);return TK_IDENTIFIER;}
+{putHash(SYMBOL_IDENTIFIER,yytext);return TK_IDENTIFIER;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 42 "scanner.l"
-{putHash(LIT_INTEGER,yytext);return LIT_INTEGER;}
+{putHash(SYMBOL_LIT_INT,yytext);return LIT_INTEGER;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 43 "scanner.l"
-{putHash(LIT_CHAR,yytext);return LIT_CHAR;}
+{putHash(SYMBOL_LIT_CHAR,yytext);return LIT_CHAR;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 44 "scanner.l"
-{putHash(LIT_STRING,yytext);return LIT_STRING;}
+{putHash(SYMBOL_LIT_STRING,yytext);return LIT_STRING;}
 	YY_BREAK
 case 26:
 /* rule 26 can match eol */
