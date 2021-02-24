@@ -33,20 +33,28 @@ int yylex();
 %token LIT_CHAR      
 %token LIT_STRING    
 
-%token TOKEN_ERROR   
+%token TOKEN_ERROR  
+
+
+%left '|' '&' 
+%left '<' '>' OPERATOR_EQ OPERATOR_LE OPERATOR_GE OPERATOR_DIF
+%left '+' '-'
+%left '*' '/'  
+%left '#' '$' '~'
+
 
 
 %%
 
 programa: 
-	variable ';' programa 
+	decl ';' programa 
 	| function ';' programa 
-	| variable ';'
+	| decl ';'
 	| function ';'
 	;
 
-variable: 
-	type TK_IDENTIFIER '=' varlit
+decl: 
+	type TK_IDENTIFIER ':' varlit
 	| type '[' LIT_INTEGER ']' TK_IDENTIFIER  ':' varlit vector_value
 	| type '[' LIT_INTEGER ']' TK_IDENTIFIER 
 	;
@@ -88,7 +96,14 @@ listparameters:
 
 command:
 	'{' block '}'
-	| simple
+	| KW_READ TK_IDENTIFIER
+	| KW_RETURN expr;
+	| assign
+	| KW_PRINT print
+	| KW_IF '(' expr ')' KW_THEN command
+	| KW_IF '(' expr ')' KW_THEN command KW_ELSE command
+	| KW_WHILE '(' expr ')' command
+	|
 	;
 
 block:
@@ -96,23 +111,11 @@ block:
 	| command ';'
 	;
 
-simple:	
-	KW_READ TK_IDENTIFIER
-	|KW_RETURN expr;
-	| assign
-	| KW_PRINT print
-	| flow_control
-	;
-
-flow_control:
-	KW_IF '(' expr ')' KW_THEN command
-	| KW_IF '(' expr ')' KW_THEN command KW_ELSE command
-	| KW_WHILE '(' expr ')' command
-
 print: LIT_STRING
 	| expr
 	| LIT_STRING ',' print
 	| expr ',' print
+
 
 assign:
 	TK_IDENTIFIER LEFT_ASSIGN expr
@@ -137,12 +140,13 @@ expr:
 	| expr '*' expr
 	| expr '/' expr 
 	| expr '<' expr 
+	| expr '>' expr 
 	| expr '|' expr
 	| expr '&' expr
 	| expr OPERATOR_LE expr  
 	| expr OPERATOR_GE expr   
 	| expr OPERATOR_EQ expr   
-	| expr OPERATOR_DIF expr  
+	| expr OPERATOR_DIF expr 
 	;
 func_arguments:
 	func_arguments_list

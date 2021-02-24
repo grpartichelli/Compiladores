@@ -1,15 +1,15 @@
 # Gabriel 301416 Makefile
 
 etapa2: lex.yy.o main.o hash.o y.tab.o
-	gcc -o etapa2 lex.yy.o main.o hash.o y.tab.o
+	gcc -Wall -o etapa2 lex.yy.o main.o hash.o y.tab.o
 
 main.o: main.c
-	gcc -c main.c
+	gcc -Wall -c main.c
 hash.o: hash.c
-	gcc -c hash.c
+	gcc -Wall -c hash.c
 
 y.tab.o: y.tab.c
-	gcc -c y.tab.c
+	gcc -Wall -c y.tab.c
 		
 y.tab.c: parser.y
 	yacc -d parser.y

@@ -26,7 +26,7 @@
 "true"	{return LIT_TRUE;}
 "false"	{return LIT_FALSE;}
 
-[-,=;:()\[\]\{\}+*\/<>|&~$#] {return yytext[0];}
+[-,;:()\[\]\{\}+*\/<>|&~$#] {return yytext[0];}
 
 [ \t]
 
