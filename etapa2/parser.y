@@ -108,7 +108,7 @@ command:
 
 block:
 	command ';' block	
-	| command ';'
+	| 
 	;
 
 print: LIT_STRING
