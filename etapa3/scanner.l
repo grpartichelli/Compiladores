@@ -39,11 +39,11 @@
 "<-" {return LEFT_ASSIGN;}
 "->" {return RIGHT_ASSIGN;}
 
-[a-zA-Z_][0-9a-zA-Z_]* {putHash(SYMBOL_IDENTIFIER,yytext);return TK_IDENTIFIER;}
+[a-zA-Z_][0-9a-zA-Z_]* {yylval.symbol = putHash(SYMBOL_IDENTIFIER,yytext); ;return TK_IDENTIFIER;}
 
-[0-9]+ {putHash(SYMBOL_LIT_INT,yytext);return LIT_INTEGER;}
-"'"."'" {putHash(SYMBOL_LIT_CHAR,yytext);return LIT_CHAR;}
-\"(\\.|[^"\\\n])*\" {putHash(SYMBOL_LIT_STRING,yytext);return LIT_STRING;}
+[0-9]+ {yylval.symbol = putHash(SYMBOL_LIT_INT,yytext);return LIT_INTEGER;}
+"'"."'" {yylval.symbol = putHash(SYMBOL_LIT_CHAR,yytext);return LIT_CHAR;}
+\"(\\.|[^"\\\n])*\" {yylval.symbol =  putHash(SYMBOL_LIT_STRING,yytext);return LIT_STRING;}
 
 "\n" {numLines++;}
 

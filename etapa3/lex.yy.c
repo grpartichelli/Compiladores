@@ -895,22 +895,22 @@ YY_RULE_SETUP
 case 22:
 YY_RULE_SETUP
 #line 42 "scanner.l"
-{putHash(SYMBOL_IDENTIFIER,yytext);return TK_IDENTIFIER;}
+{yylval.symbol = putHash(SYMBOL_IDENTIFIER,yytext); ;return TK_IDENTIFIER;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 44 "scanner.l"
-{putHash(SYMBOL_LIT_INT,yytext);return LIT_INTEGER;}
+{yylval.symbol = putHash(SYMBOL_LIT_INT,yytext);return LIT_INTEGER;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 45 "scanner.l"
-{putHash(SYMBOL_LIT_CHAR,yytext);return LIT_CHAR;}
+{yylval.symbol = putHash(SYMBOL_LIT_CHAR,yytext);return LIT_CHAR;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 46 "scanner.l"
-{putHash(SYMBOL_LIT_STRING,yytext);return LIT_STRING;}
+{yylval.symbol =  putHash(SYMBOL_LIT_STRING,yytext);return LIT_STRING;}
 	YY_BREAK
 case 26:
 /* rule 26 can match eol */

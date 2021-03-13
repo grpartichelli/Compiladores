@@ -24,7 +24,8 @@
 #include "hash.h"
 int getLineNumber();
 int yylex();
-#line 10 "parser.y"
+FILE* outfile;
+#line 11 "parser.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
@@ -36,7 +37,7 @@ typedef union{
 	ast *ast;
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 40 "y.tab.c"
+#line 41 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -462,7 +463,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 177 "parser.y"
+#line 178 "parser.y"
 
 int yyerror(){
 	
@@ -471,9 +472,9 @@ int yyerror(){
 }
 
 void loadOutFile(FILE *saida){
-	printf("Hey!");
+	outfile = saida;
 }
-#line 477 "y.tab.c"
+#line 478 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */

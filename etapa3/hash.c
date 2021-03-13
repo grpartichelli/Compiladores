@@ -45,7 +45,7 @@ node *getHash(char *content){
 	return NULL;
 }
 //Adiciona um novo nodo a hash
-void putHash(int type,char *content){
+node* putHash(int type,char *content){
 
 	node *n;
 
@@ -63,5 +63,8 @@ void putHash(int type,char *content){
 		int pos = getAddress(content);
 		n->next = hash_table[pos];
 		hash_table[pos] = n;
+
+
 	}
+	return n;
 }
