@@ -6,7 +6,29 @@
 #define NUM_SONS 4 //recomendado
 
 #define AST_SYMBOL 0
-#define AST_ADD 1
+#define AST_PARENTESIS 1
+#define AST_VECTOR 2
+#define AST_FUNCTION 3
+
+#define AST_NEG 4
+#define AST_DOLLAR 5
+#define AST_HASHTAG 6
+
+#define AST_ADD 7
+#define AST_SUB 8
+#define AST_MULT 9
+#define AST_DIV 10
+#define AST_LESS 11
+#define AST_GREATER 12
+#define AST_OR 13
+#define AST_AND 14
+
+#define AST_LE 15
+#define AST_GE 16
+#define AST_EQ 17
+#define AST_DIF 18
+
+#define AST_FUNC_ARGUMENTS 19
 
 
 

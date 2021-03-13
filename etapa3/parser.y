@@ -32,7 +32,8 @@ FILE* outfile;
 %token OPERATOR_DIF  
 %token LEFT_ASSIGN   
 %token RIGHT_ASSIGN  
-%token TK_IDENTIFIER 
+%token TK_IDENTIFIER
+%type<symbol> TK_IDENTIFIER
 
 
 %token LIT_INTEGER  
@@ -55,8 +56,15 @@ FILE* outfile;
 %left '*' '/'  
 %left '#' '$' '~'
 
-%type<ast> expr
 
+
+%type<ast> expr
+%type<ast> func_arguments
+%type<ast> func_arguments_list
+%type<ast> int
+%type<ast> string
+%type<ast> varlit
+%type<ast> identifier
 
 %%
 
@@ -71,9 +79,9 @@ programa:
 	;
 
 decl: 
-	type TK_IDENTIFIER ':' varlit
-	| type '[' LIT_INTEGER ']' TK_IDENTIFIER  ':' varlit vector_value
-	| type '[' LIT_INTEGER ']' TK_IDENTIFIER 
+	type identifier ':' varlit
+	| type '[' int ']' identifier  ':' varlit vector_value
+	| type '[' int']' identifier 
 	;
 
 type: 
@@ -83,12 +91,6 @@ type:
 	|KW_POINTER 
 	;
 
-varlit: 
-	LIT_INTEGER 
-	| LIT_TRUE
-	| LIT_FALSE
-	| LIT_CHAR 
-	;
 
 vector_value: 
 	varlit vector_value
@@ -97,7 +99,7 @@ vector_value:
 
 
 function: 
-	type TK_IDENTIFIER '(' parameters ')' command
+	type identifier '(' parameters ')' command
 	;
 
 
@@ -107,13 +109,13 @@ parameters:
 	;
 
 listparameters:
-	type TK_IDENTIFIER ',' listparameters
-	| type TK_IDENTIFIER
+	type identifier ',' listparameters
+	| type identifier
 	;
 
 command:
 	'{' block '}'
-	| KW_READ TK_IDENTIFIER
+	| KW_READ identifier
 	| KW_RETURN expr;
 	| assign
 	| KW_PRINT print
@@ -128,51 +130,67 @@ block:
 	| 
 	;
 
-print: LIT_STRING
+print: string
 	| expr
-	| LIT_STRING ',' print
+	| string ',' print
 	| expr ',' print
 
 
 assign:
-	TK_IDENTIFIER LEFT_ASSIGN expr {astPrint($3,0);}
-	| TK_IDENTIFIER '[' expr ']' LEFT_ASSIGN expr
-	| expr RIGHT_ASSIGN TK_IDENTIFIER 
-	| expr RIGHT_ASSIGN TK_IDENTIFIER '[' expr ']'
+	identifier LEFT_ASSIGN expr {astPrint($3,0);}
+	| identifier '[' expr ']' LEFT_ASSIGN expr
+	| expr RIGHT_ASSIGN identifier 
+	| expr RIGHT_ASSIGN identifier '[' expr ']'
 	;
 expr:
-	'(' expr ')'
-	| TK_IDENTIFIER
-	| TK_IDENTIFIER '[' expr ']'
-	| LIT_INTEGER { $$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);}
-	| LIT_CHAR
-	| LIT_TRUE
-	| LIT_FALSE
-	| TK_IDENTIFIER '(' func_arguments ')'
-	| '~' expr 
-	| '$' expr
-	| '#' expr
+	'(' expr ')' { $$ = astGenerate(AST_PARENTESIS,0,$2,0,0,0);}
+	| identifier { $$ = $1;}
+	| identifier '[' expr ']' { $$ = astGenerate(AST_VECTOR,0,$1,$3,0,0);}
+	| varlit {$$ = $1;}
+	| identifier '(' func_arguments ')' { $$ = astGenerate(AST_FUNCTION,0,$1,$3,0,0);}
+	| '~' expr { $$ = astGenerate(AST_NEG,0,$2,0,0,0);}
+	| '$' expr { $$ = astGenerate(AST_DOLLAR,0,$2,0,0,0);}
+	| '#' expr { $$ = astGenerate(AST_HASHTAG,0,$2,0,0,0);}
 	| expr '+' expr {$$ = astGenerate(AST_ADD,0,$1,$3,0,0);}
-	| expr '-' expr 
-	| expr '*' expr
-	| expr '/' expr 
-	| expr '<' expr 
-	| expr '>' expr 
-	| expr '|' expr
-	| expr '&' expr
-	| expr OPERATOR_LE expr  
-	| expr OPERATOR_GE expr   
-	| expr OPERATOR_EQ expr   
-	| expr OPERATOR_DIF expr 
+	| expr '-' expr {$$ = astGenerate(AST_SUB,0,$1,$3,0,0);}
+	| expr '*' expr {$$ = astGenerate(AST_MULT,0,$1,$3,0,0);}
+	| expr '/' expr {$$ = astGenerate(AST_DIV,0,$1,$3,0,0);}
+	| expr '<' expr {$$ = astGenerate(AST_LESS,0,$1,$3,0,0);}
+	| expr '>' expr {$$ = astGenerate(AST_GREATER,0,$1,$3,0,0);}
+	| expr '|' expr{$$ = astGenerate(AST_OR,0,$1,$3,0,0);}
+	| expr '&' expr {$$ = astGenerate(AST_AND,0,$1,$3,0,0);}
+	| expr OPERATOR_LE expr  {$$ = astGenerate(AST_LE,0,$1,$3,0,0);}
+	| expr OPERATOR_GE expr   {$$ = astGenerate(AST_GE,0,$1,$3,0,0);}
+	| expr OPERATOR_EQ expr   {$$ = astGenerate(AST_EQ,0,$1,$3,0,0);}
+	| expr OPERATOR_DIF expr  {$$ = astGenerate(AST_DIF,0,$1,$3,0,0);}
 	;
 func_arguments:
-	func_arguments_list
-	| 
+	func_arguments_list {$$ = $1;}
+	| {$$ = 0;}
 	;
 func_arguments_list:
-	expr ',' func_arguments_list
-	| expr
+	expr ',' func_arguments_list {$$ = astGenerate(AST_FUNC_ARGUMENTS,0,$1,$3,0,0);}
+	| expr {$$ = $1;}
 	;
+
+identifier: 
+	TK_IDENTIFIER {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);}//Identificador deve ser um nodo folha
+	;
+
+string:
+	LIT_STRING{$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);} //String deve ser um nodo folha
+	;
+int:
+	LIT_INTEGER{$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);} //Int deve ser um nodo folha
+	;
+
+varlit: 
+	LIT_INTEGER {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);} ////Deve ser um nodo folha
+	| LIT_TRUE {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0); }//Deve ser um nodo folha
+	| LIT_FALSE {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);} //Deve ser um nodo folha
+	| LIT_CHAR {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0); }//Deve ser um nodo folha
+	;
+
 
 
 %%

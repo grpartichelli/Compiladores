@@ -29,7 +29,7 @@ void astPrint(ast *n, int level){
 	switch(n->type){
 		case AST_SYMBOL: printf("AST_SYMBOL=");break;
 		case AST_ADD: printf("AST_ADD");break;
-		default: printf("UNKNOWN DEFAULT{");break;
+		default: printf("UNKNOWN DEFAULT");break;
 
 	}
 
