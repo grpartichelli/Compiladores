@@ -6,6 +6,7 @@
 #define NUM_SONS 4 //recomendado
 
 #define AST_SYMBOL 0
+#define AST_ADD 1
 
 
 

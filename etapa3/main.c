@@ -50,7 +50,7 @@ int main(int argc, char **argv){
 	yyparse();
 
 
-	printf("Número de Linhas: %d\n",getLineNumber());
+	printf("\n\nNúmero de Linhas: %d\n",getLineNumber());
 	printHash();
 
 	printf("Compilação concluida com sucesso.\n");

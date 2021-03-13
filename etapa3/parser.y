@@ -55,6 +55,7 @@ FILE* outfile;
 %left '*' '/'  
 %left '#' '$' '~'
 
+%type<ast> expr
 
 
 %%
@@ -134,7 +135,7 @@ print: LIT_STRING
 
 
 assign:
-	TK_IDENTIFIER LEFT_ASSIGN expr
+	TK_IDENTIFIER LEFT_ASSIGN expr {astPrint($3,0);}
 	| TK_IDENTIFIER '[' expr ']' LEFT_ASSIGN expr
 	| expr RIGHT_ASSIGN TK_IDENTIFIER 
 	| expr RIGHT_ASSIGN TK_IDENTIFIER '[' expr ']'
@@ -143,7 +144,7 @@ expr:
 	'(' expr ')'
 	| TK_IDENTIFIER
 	| TK_IDENTIFIER '[' expr ']'
-	| LIT_INTEGER
+	| LIT_INTEGER { $$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);}
 	| LIT_CHAR
 	| LIT_TRUE
 	| LIT_FALSE
@@ -151,7 +152,7 @@ expr:
 	| '~' expr 
 	| '$' expr
 	| '#' expr
-	| expr '+' expr
+	| expr '+' expr {$$ = astGenerate(AST_ADD,0,$1,$3,0,0);}
 	| expr '-' expr 
 	| expr '*' expr
 	| expr '/' expr 
