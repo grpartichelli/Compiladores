@@ -170,8 +170,8 @@ void astMakeCode(ast *n , FILE *f){
 		case AST_RIGHT_ASSIGN_VEC: 
 			astMakeCode(n->sons[0],f);
 			fprintf(f,"->");
-			fprintf(f,"["); astMakeCode(n->sons[1],f); fprintf(f,"]");
-			astMakeCode(n->sons[2],f);
+			astMakeCode(n->sons[1],f);
+			fprintf(f,"[");astMakeCode(n->sons[2],f);fprintf(f,"]");
 		break;
 
 		case AST_PRINT: fprintf(f,"print ");astMakeCode(n->sons[0],f);break;
