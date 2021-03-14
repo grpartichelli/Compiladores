@@ -23,14 +23,14 @@ void astPrint(ast *n, int level){
 		return;
 
 	for(int i=0;i<level;i++){
-		printf("  ");
+		printf(" ");
 	}
 
 	switch(n->type){
 		case AST_SYMBOL: printf("AST_SYMBOL=");break;
 		case AST_PARENTESIS:printf("AST_PARENTESIS");break;
 		case AST_VECTOR: printf("AST_VECTOR");break;
-		case AST_FUNCTION: printf("AST_FUNCTION");break;
+		case AST_EXPR_FUNCTION: printf("AST_FUNCTION");break;
 		case AST_NEG: printf("AST_NEG");break;
 		case AST_DOLLAR: printf("AST_DOLLAR");break;
 		case AST_HASHTAG: printf("AST_HASHTAG");break;
@@ -51,6 +51,32 @@ void astPrint(ast *n, int level){
 		case AST_RIGHT_ASSIGN: printf("AST_RIGHT_ASSIGN");break;
 		case AST_LEFT_ASSIGN_VEC: printf("AST_LEFT_ASSIGN_VEC");break;
 		case AST_RIGHT_ASSIGN_VEC: printf("AST_RIGHT_ASSIGN_VEC");break;
+		case AST_PRINT: printf("AST_PRINT");break;
+		case AST_PRINTLST_STRING: printf("AST_PRINTLST_STRING");break;
+		case AST_PRINTLST_EXPR: printf("AST_PRINTLST_EXPR");break;
+		case AST_READ: printf("AST_READ");break;
+		case AST_RETURN: printf("AST_RETURN");break;
+		case AST_IF: printf("AST_IF");break;
+		case AST_IFTHEN: printf("AST_IFTHEN");break;
+		case AST_WHILE: printf("AST_WHILE");break;
+		case AST_BLOCK: printf("AST_BLOCK");break;
+		case AST_BLOCKLST: printf("AST_BLOCKLST");break;
+		case AST_KW_BOOL: printf("AST_KW_BOOL");break;
+		case AST_KW_POINTER: printf("AST_KW_POINTER");break;
+		case AST_KW_INT: printf("AST_KW_INT");break;
+		case AST_KW_CHAR: printf("AST_KW_CHAR");break;
+		case AST_FUNCTION: printf("AST_FUNCTION");break;
+		case AST_LST_PAR: printf("AST_LST_PAR");break;
+		case AST_LST_PAREND: printf("AST_LST_PAREND");break;
+		case AST_DECL_LIT: printf("AST_DECL_LIT");break; 
+		case AST_DECL_VEC: printf("AST_DECL_VEC");break; 
+		case AST_DECL_VEC_EMPTY: printf("AST_DECL_VEC_EMPTY");break; 
+		case AST_LST_VEC1: printf("AST_LST_VEC1");break; 
+		case AST_LST_VEC2: printf("AST_LST_VEC2");break; 
+		case AST_LST_DECL: printf("AST_LST_DECL");break;
+		case AST_LST_FUNC: printf("AST_LST_FUNC");break;
+		case AST_LSTEND_DECL: printf("AST_LSTEND_DECL");break;
+		case AST_LSTEND_FUNC: printf("AST_LSTEND_FUNC");break;
 		default: printf("UNKNOWN DEFAULT");break;
 
 	}
@@ -72,7 +98,7 @@ void astPrint(ast *n, int level){
 
 	if(!n->symbol){
 		for(int i=0;i<level;i++){
-			printf("  ");
+			printf(" ");
 		}
 		printf("}\n");
 	}

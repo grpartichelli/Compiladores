@@ -8,7 +8,7 @@
 #define AST_SYMBOL 0
 #define AST_PARENTESIS 1
 #define AST_VECTOR 2
-#define AST_FUNCTION 3
+#define AST_EXPR_FUNCTION 3
 
 #define AST_NEG 4
 #define AST_DOLLAR 5
@@ -34,6 +34,39 @@
 #define AST_RIGHT_ASSIGN 21
 #define AST_LEFT_ASSIGN_VEC 22
 #define AST_RIGHT_ASSIGN_VEC 23
+
+#define AST_PRINT 24
+#define AST_PRINTLST_STRING 25
+#define AST_PRINTLST_EXPR 26
+#define AST_READ 27
+#define AST_RETURN 28
+#define AST_IF 29
+#define AST_IFTHEN 30
+#define AST_WHILE 31
+#define AST_BLOCK 32
+#define AST_BLOCKLST 33
+
+#define AST_KW_BOOL 34
+#define AST_KW_POINTER 35
+#define AST_KW_INT 36
+#define AST_KW_CHAR 37
+
+#define AST_FUNCTION 38
+#define AST_LST_PAR 39
+#define AST_LST_PAREND 40
+
+#define AST_DECL_LIT 41
+#define AST_DECL_VEC 42
+#define AST_DECL_VEC_EMPTY 43
+#define AST_LST_VEC1 44 
+#define AST_LST_VEC2 45
+
+#define AST_LST_DECL 46
+#define AST_LST_FUNC 47
+#define AST_LSTEND_DECL 48
+#define AST_LSTEND_FUNC 49
+
+
 
 
 

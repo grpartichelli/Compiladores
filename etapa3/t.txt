@@ -1,5 +1,8 @@
 
 int main(){
 	
-	love <- 1+2+3+4;
+	hey <- 32;
+	print "Love";
+	print "Love";
+	print "Love";
 };

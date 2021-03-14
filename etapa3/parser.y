@@ -67,75 +67,85 @@ FILE* outfile;
 %type<ast> identifier
 
 %type<ast> assign
+%type <ast> command
+%type <ast> block
+%type <ast> print
+%type <ast> type
+
+%type <ast> programa
+%type <ast> function
+%type <ast> parameters
+%type <ast> listparameters
+%type <ast> decl
+%type <ast> vector_value
 
 %%
 
-inicio: programa
+inicio: programa {astPrint($1,0);}
 		;
 
 programa: 
-	decl ';' programa 
-	| function ';' programa 
-	| decl ';'
-	| function ';'
+	decl ';' programa  {$$ = astGenerate(AST_LST_DECL,0,$1,$3,0,0);}
+	| function ';' programa {$$ = astGenerate(AST_LST_FUNC,0,$1,$3,0,0);};
+	| decl ';' {$$ = astGenerate(AST_LSTEND_DECL,0,$1,0,0,0);}
+	| function ';' {$$ = astGenerate(AST_LSTEND_FUNC,0,$1,0,0,0);}
 	;
 
 decl: 
-	type identifier ':' literals
-	| type '[' int ']' identifier  ':' literals vector_value
-	| type '[' int']' identifier 
+	type identifier ':' literals {$$ = astGenerate(AST_DECL_LIT,0,$1,$2,$4,0);}
+	| type '[' int ']' identifier  ':' vector_value {$$ = astGenerate(AST_DECL_VEC,0,$1,$3,$5,$7);}
+	| type '[' int']' identifier {$$ = astGenerate(AST_DECL_VEC_EMPTY,0,$1,$3,$5,0);}
 	;
 
 type: 
-	KW_BOOL
-	|KW_CHAR
-	|KW_INT 
-	|KW_POINTER 
+	KW_BOOL {$$ = astGenerate(AST_KW_BOOL,0,0,0,0,0);}
+	|KW_CHAR {$$ = astGenerate(AST_KW_CHAR,0,0,0,0,0);}
+	|KW_INT  {$$ = astGenerate(AST_KW_INT,0,0,0,0,0);}
+	|KW_POINTER {$$ = astGenerate(AST_KW_POINTER,0,0,0,0,0);}
 	;
 
 
 vector_value: 
-	literals vector_value
-	| 
+	literals vector_value {$$ = astGenerate(AST_LST_VEC1,0,$1,$2,0,0);}
+	| literals {$$ = astGenerate(AST_LST_VEC2,0,$1,0,0,0);}
 	;
 
 
 function: 
-	type identifier '(' parameters ')' command
+	type identifier '(' parameters ')' command {$$ = astGenerate(AST_FUNCTION,0,$1,$2,$4,$6);}
 	;
 
 
 parameters: 
-	listparameters
-	|
+	listparameters {$$ = $1;}
+	| {$$ = 0;}
 	;
 
 listparameters:
-	type identifier ',' listparameters
-	| type identifier
-	;
+	type identifier ',' listparameters {$$ = astGenerate(AST_LST_PAR,0,$1,$2,$4,0);}
+	| type identifier {$$ = astGenerate(AST_LST_PAREND,0,$1,$2,0,0);}
 
 command:
-	'{' block '}'
-	| KW_READ identifier
-	| KW_RETURN expr;
-	| assign {astPrint($1,0);}
-	| KW_PRINT print
-	| KW_IF '(' expr ')' KW_THEN command
-	| KW_IF '(' expr ')' KW_THEN command KW_ELSE command
-	| KW_WHILE '(' expr ')' command
-	|
+	'{' block '}' { $$ = astGenerate(AST_BLOCK,0,$2,0,0,0);}
+	| KW_READ identifier { $$ = astGenerate(AST_READ,0,$2,0,0,0);}
+	| KW_RETURN expr; { $$ = astGenerate(AST_RETURN,0,$2,0,0,0);}
+	| assign {$$ = $1;}
+	| KW_PRINT print { $$ = astGenerate(AST_PRINT,0,$2,0,0,0);}
+	| KW_IF '(' expr ')' KW_THEN command { $$ = astGenerate(AST_IF,0,$3,$6,0,0);}
+	| KW_IF '(' expr ')' KW_THEN command KW_ELSE command { $$ = astGenerate(AST_IFTHEN,0,$3,$6,$8,0);}
+	| KW_WHILE '(' expr ')' command  {$$ = astGenerate(AST_WHILE,0,$3,$5,0,0);}
+	| {$$ = 0;}
 	;
 
 block:
-	command ';' block	
-	| 
+	command ';' block { $$ = astGenerate(AST_BLOCKLST,0,$1,$3,0,0);}
+	| {$$ = 0;}
 	;
 
-print: string
-	| expr
-	| string ',' print
-	| expr ',' print
+print: string { $$ = $1;}
+	| expr { $$ = $1;}
+	| string ',' print { $$ = astGenerate(AST_PRINTLST_STRING,0,$1,$3,0,0);}
+	| expr ',' print { $$ = astGenerate(AST_PRINTLST_EXPR,0,$1,$3,0,0);}
 
 
 assign:
@@ -149,7 +159,7 @@ expr:
 	| identifier { $$ = $1;}
 	| identifier '[' expr ']' { $$ = astGenerate(AST_VECTOR,0,$1,$3,0,0);}
 	| literals {$$ = $1;}
-	| identifier '(' func_arguments ')' { $$ = astGenerate(AST_FUNCTION,0,$1,$3,0,0);}
+	| identifier '(' func_arguments ')' { $$ = astGenerate(AST_EXPR_FUNCTION,0,$1,$3,0,0);}
 	| '~' expr { $$ = astGenerate(AST_NEG,0,$2,0,0,0);}
 	| '$' expr { $$ = astGenerate(AST_DOLLAR,0,$2,0,0,0);}
 	| '#' expr { $$ = astGenerate(AST_HASHTAG,0,$2,0,0,0);}
