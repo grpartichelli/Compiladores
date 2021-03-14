@@ -99,7 +99,7 @@ char some_whiles (int p)
       while (0)
     {
     incn(i,1) -> i;
-    incn(a,1) -> a;
+    incn(a,1,j,t) -> a;
     };
   };
 

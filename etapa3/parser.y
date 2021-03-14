@@ -63,8 +63,10 @@ FILE* outfile;
 %type<ast> func_arguments_list
 %type<ast> int
 %type<ast> string
-%type<ast> varlit
+%type<ast> literals
 %type<ast> identifier
+
+%type<ast> assign
 
 %%
 
@@ -79,8 +81,8 @@ programa:
 	;
 
 decl: 
-	type identifier ':' varlit
-	| type '[' int ']' identifier  ':' varlit vector_value
+	type identifier ':' literals
+	| type '[' int ']' identifier  ':' literals vector_value
 	| type '[' int']' identifier 
 	;
 
@@ -93,7 +95,7 @@ type:
 
 
 vector_value: 
-	varlit vector_value
+	literals vector_value
 	| 
 	;
 
@@ -117,7 +119,7 @@ command:
 	'{' block '}'
 	| KW_READ identifier
 	| KW_RETURN expr;
-	| assign
+	| assign {astPrint($1,0);}
 	| KW_PRINT print
 	| KW_IF '(' expr ')' KW_THEN command
 	| KW_IF '(' expr ')' KW_THEN command KW_ELSE command
@@ -137,16 +139,16 @@ print: string
 
 
 assign:
-	identifier LEFT_ASSIGN expr {astPrint($3,0);}
-	| identifier '[' expr ']' LEFT_ASSIGN expr
-	| expr RIGHT_ASSIGN identifier 
-	| expr RIGHT_ASSIGN identifier '[' expr ']'
+	identifier LEFT_ASSIGN expr { $$ = astGenerate(AST_LEFT_ASSIGN,0,$1,$3,0,0);}
+	| identifier '[' expr ']' LEFT_ASSIGN expr { $$ = astGenerate(AST_LEFT_ASSIGN_VEC,0,$1,$3,$6,0);}
+	| expr RIGHT_ASSIGN identifier { $$ = astGenerate(AST_RIGHT_ASSIGN,0,$1,$3,0,0);}
+	| expr RIGHT_ASSIGN identifier '[' expr ']' { $$ = astGenerate(AST_RIGHT_ASSIGN_VEC,0,$1,$3,$5,0);}
 	;
 expr:
 	'(' expr ')' { $$ = astGenerate(AST_PARENTESIS,0,$2,0,0,0);}
 	| identifier { $$ = $1;}
 	| identifier '[' expr ']' { $$ = astGenerate(AST_VECTOR,0,$1,$3,0,0);}
-	| varlit {$$ = $1;}
+	| literals {$$ = $1;}
 	| identifier '(' func_arguments ')' { $$ = astGenerate(AST_FUNCTION,0,$1,$3,0,0);}
 	| '~' expr { $$ = astGenerate(AST_NEG,0,$2,0,0,0);}
 	| '$' expr { $$ = astGenerate(AST_DOLLAR,0,$2,0,0,0);}
@@ -184,7 +186,7 @@ int:
 	LIT_INTEGER{$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);} //Int deve ser um nodo folha
 	;
 
-varlit: 
+literals: 
 	LIT_INTEGER {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);} ////Deve ser um nodo folha
 	| LIT_TRUE {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0); }//Deve ser um nodo folha
 	| LIT_FALSE {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);} //Deve ser um nodo folha

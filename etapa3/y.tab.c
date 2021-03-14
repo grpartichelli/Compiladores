@@ -97,10 +97,10 @@ extern int YYPARSE_DECL();
 #define YYERRCODE 256
 typedef short YYINT;
 static const YYINT yylhs[] = {                           -1,
-    0,    8,    8,    8,    8,    9,    9,    9,   11,   11,
-   11,   11,   12,   12,   10,   13,   13,   15,   15,   14,
-   14,   14,   14,   14,   14,   14,   14,   14,   16,   16,
-   18,   18,   18,   18,   17,   17,   17,   17,    1,    1,
+    0,    9,    9,    9,    9,   10,   10,   10,   12,   12,
+   12,   12,   13,   13,   11,   14,   14,   16,   16,   15,
+   15,   15,   15,   15,   15,   15,   15,   15,   17,   17,
+   18,   18,   18,   18,    8,    8,    8,    8,    1,    1,
     1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
     1,    1,    1,    1,    1,    1,    1,    1,    2,    2,
     3,    3,    7,    5,    4,    6,    6,    6,    6,
@@ -119,7 +119,7 @@ static const YYINT yydefred[] = {                         0,
     0,   63,    0,    0,    2,    3,   65,    0,    0,    0,
     0,   66,   67,   68,   69,    6,    0,    0,   16,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,   42,    0,   15,   23,    0,
+    0,    0,    0,    0,    0,   42,    0,   23,   15,    0,
    18,    0,    0,   21,   64,    0,    0,    0,   24,    0,
    46,   45,   44,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -131,8 +131,8 @@ static const YYINT yydefred[] = {                         0,
     0,   26,
 };
 static const YYINT yydgoto[] = {                          5,
-   45,  109,  110,   18,   57,   46,   58,    6,    7,    8,
-    9,   84,   28,   65,   29,   66,   49,   59,
+   45,  109,  110,   18,   57,   46,   58,   48,    6,    7,
+    8,    9,   84,   28,   65,   29,   66,   59,
 };
 static const YYINT yysindex[] = {                      -178,
     0,    0,    0,    0,    0,    0,  -27,   -8,  -82, -178,
@@ -167,8 +167,8 @@ static const YYINT yyrindex[] = {                         0,
   -43,    0,
 };
 static const YYINT yygindex[] = {                         0,
-  664,    0,   14,    0,    0,   23,  540,   34,    0,    0,
-   -1,   55,    0,   15,   98,   48,    0,   12,
+  664,    0,   14,    0,    0,   23,  540,    0,   34,    0,
+    0,   -1,   55,    0,   15,   98,   48,   12,
 };
 #define YYTABLESIZE 790
 static const YYINT yytable[] = {                         40,
@@ -176,7 +176,7 @@ static const YYINT yytable[] = {                         40,
    43,   40,   41,   37,   35,   28,   43,   36,   27,   82,
    19,   17,   78,   78,   76,   82,   77,   79,   79,   21,
    40,   10,   27,   40,   40,   40,   40,   40,   12,   40,
-   33,   26,   47,   15,   16,   47,   48,   47,   47,   47,
+   33,   26,   47,   15,   16,   47,   49,   47,   47,   47,
    11,   40,   40,   48,   40,   50,   48,   32,   48,   48,
    48,   34,   55,   47,   47,   55,   47,   52,   55,   30,
    89,   53,   83,   88,   48,   48,   81,   48,    1,    2,
@@ -364,14 +364,14 @@ static const char *const yyrule[] = {
 "programa : function ';' programa",
 "programa : decl ';'",
 "programa : function ';'",
-"decl : type identifier ':' varlit",
-"decl : type '[' int ']' identifier ':' varlit vector_value",
+"decl : type identifier ':' literals",
+"decl : type '[' int ']' identifier ':' literals vector_value",
 "decl : type '[' int ']' identifier",
 "type : KW_BOOL",
 "type : KW_CHAR",
 "type : KW_INT",
 "type : KW_POINTER",
-"vector_value : varlit vector_value",
+"vector_value : literals vector_value",
 "vector_value :",
 "function : type identifier '(' parameters ')' command",
 "parameters : listparameters",
@@ -400,7 +400,7 @@ static const char *const yyrule[] = {
 "expr : '(' expr ')'",
 "expr : identifier",
 "expr : identifier '[' expr ']'",
-"expr : varlit",
+"expr : literals",
 "expr : identifier '(' func_arguments ')'",
 "expr : '~' expr",
 "expr : '$' expr",
@@ -424,10 +424,10 @@ static const char *const yyrule[] = {
 "identifier : TK_IDENTIFIER",
 "string : LIT_STRING",
 "int : LIT_INTEGER",
-"varlit : LIT_INTEGER",
-"varlit : LIT_TRUE",
-"varlit : LIT_FALSE",
-"varlit : LIT_CHAR",
+"literals : LIT_INTEGER",
+"literals : LIT_TRUE",
+"literals : LIT_FALSE",
+"literals : LIT_CHAR",
 
 };
 #endif
@@ -465,7 +465,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 197 "parser.y"
+#line 199 "parser.y"
 
 int yyerror(){
 	
@@ -678,135 +678,151 @@ yyreduce:
         memset(&yyval, 0, sizeof yyval);
     switch (yyn)
     {
-case 35:
-#line 140 "parser.y"
+case 23:
+#line 122 "parser.y"
 	{astPrint(yystack.l_mark[0].ast,0);}
 break;
+case 35:
+#line 142 "parser.y"
+	{ yyval.ast = astGenerate(AST_LEFT_ASSIGN,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
+break;
+case 36:
+#line 143 "parser.y"
+	{ yyval.ast = astGenerate(AST_LEFT_ASSIGN_VEC,0,yystack.l_mark[-5].ast,yystack.l_mark[-3].ast,yystack.l_mark[0].ast,0);}
+break;
+case 37:
+#line 144 "parser.y"
+	{ yyval.ast = astGenerate(AST_RIGHT_ASSIGN,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
+break;
+case 38:
+#line 145 "parser.y"
+	{ yyval.ast = astGenerate(AST_RIGHT_ASSIGN_VEC,0,yystack.l_mark[-5].ast,yystack.l_mark[-3].ast,yystack.l_mark[-1].ast,0);}
+break;
 case 39:
-#line 146 "parser.y"
+#line 148 "parser.y"
 	{ yyval.ast = astGenerate(AST_PARENTESIS,0,yystack.l_mark[-1].ast,0,0,0);}
 break;
 case 40:
-#line 147 "parser.y"
+#line 149 "parser.y"
 	{ yyval.ast = yystack.l_mark[0].ast;}
 break;
 case 41:
-#line 148 "parser.y"
+#line 150 "parser.y"
 	{ yyval.ast = astGenerate(AST_VECTOR,0,yystack.l_mark[-3].ast,yystack.l_mark[-1].ast,0,0);}
 break;
 case 42:
-#line 149 "parser.y"
+#line 151 "parser.y"
 	{yyval.ast = yystack.l_mark[0].ast;}
 break;
 case 43:
-#line 150 "parser.y"
+#line 152 "parser.y"
 	{ yyval.ast = astGenerate(AST_FUNCTION,0,yystack.l_mark[-3].ast,yystack.l_mark[-1].ast,0,0);}
 break;
 case 44:
-#line 151 "parser.y"
+#line 153 "parser.y"
 	{ yyval.ast = astGenerate(AST_NEG,0,yystack.l_mark[0].ast,0,0,0);}
 break;
 case 45:
-#line 152 "parser.y"
+#line 154 "parser.y"
 	{ yyval.ast = astGenerate(AST_DOLLAR,0,yystack.l_mark[0].ast,0,0,0);}
 break;
 case 46:
-#line 153 "parser.y"
+#line 155 "parser.y"
 	{ yyval.ast = astGenerate(AST_HASHTAG,0,yystack.l_mark[0].ast,0,0,0);}
 break;
 case 47:
-#line 154 "parser.y"
+#line 156 "parser.y"
 	{yyval.ast = astGenerate(AST_ADD,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 48:
-#line 155 "parser.y"
+#line 157 "parser.y"
 	{yyval.ast = astGenerate(AST_SUB,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 49:
-#line 156 "parser.y"
+#line 158 "parser.y"
 	{yyval.ast = astGenerate(AST_MULT,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 50:
-#line 157 "parser.y"
+#line 159 "parser.y"
 	{yyval.ast = astGenerate(AST_DIV,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 51:
-#line 158 "parser.y"
+#line 160 "parser.y"
 	{yyval.ast = astGenerate(AST_LESS,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 52:
-#line 159 "parser.y"
+#line 161 "parser.y"
 	{yyval.ast = astGenerate(AST_GREATER,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 53:
-#line 160 "parser.y"
+#line 162 "parser.y"
 	{yyval.ast = astGenerate(AST_OR,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 54:
-#line 161 "parser.y"
+#line 163 "parser.y"
 	{yyval.ast = astGenerate(AST_AND,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 55:
-#line 162 "parser.y"
+#line 164 "parser.y"
 	{yyval.ast = astGenerate(AST_LE,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 56:
-#line 163 "parser.y"
+#line 165 "parser.y"
 	{yyval.ast = astGenerate(AST_GE,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 57:
-#line 164 "parser.y"
+#line 166 "parser.y"
 	{yyval.ast = astGenerate(AST_EQ,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 58:
-#line 165 "parser.y"
+#line 167 "parser.y"
 	{yyval.ast = astGenerate(AST_DIF,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 59:
-#line 168 "parser.y"
+#line 170 "parser.y"
 	{yyval.ast = yystack.l_mark[0].ast;}
 break;
 case 60:
-#line 169 "parser.y"
+#line 171 "parser.y"
 	{yyval.ast = 0;}
 break;
 case 61:
-#line 172 "parser.y"
+#line 174 "parser.y"
 	{yyval.ast = astGenerate(AST_FUNC_ARGUMENTS,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 62:
-#line 173 "parser.y"
+#line 175 "parser.y"
 	{yyval.ast = yystack.l_mark[0].ast;}
 break;
 case 63:
-#line 177 "parser.y"
+#line 179 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 64:
-#line 181 "parser.y"
+#line 183 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 65:
-#line 184 "parser.y"
+#line 186 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 66:
-#line 188 "parser.y"
-	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
-break;
-case 67:
-#line 189 "parser.y"
-	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0); }
-break;
-case 68:
 #line 190 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
-case 69:
+case 67:
 #line 191 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0); }
 break;
-#line 810 "y.tab.c"
+case 68:
+#line 192 "parser.y"
+	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
+break;
+case 69:
+#line 193 "parser.y"
+	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0); }
+break;
+#line 826 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;
