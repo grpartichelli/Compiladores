@@ -57,7 +57,7 @@ void astPrint(ast *n, int level){
 		case AST_READ: printf("AST_READ");break;
 		case AST_RETURN: printf("AST_RETURN");break;
 		case AST_IF: printf("AST_IF");break;
-		case AST_IFTHEN: printf("AST_IFTHEN");break;
+		case AST_IFELSE: printf("AST_IFELSE");break;
 		case AST_WHILE: printf("AST_WHILE");break;
 		case AST_BLOCK: printf("AST_BLOCK");break;
 		case AST_BLOCKLST: printf("AST_BLOCKLST");break;
@@ -106,6 +106,179 @@ void astPrint(ast *n, int level){
 }
 
 void astMakeCode(ast *n , FILE *f){
-	printf("make");
+	if(!n)
+		return;
+
+	switch(n->type){
+		case AST_SYMBOL: 
+			fprintf(f," %s ",n->symbol->content);
+		break;
+
+		case AST_PARENTESIS:
+			fprintf(f,"(");
+			astMakeCode(n->sons[0],f);
+			fprintf(f,")");
+		break;
+
+		case AST_VECTOR: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,"[");astMakeCode(n->sons[1],f);fprintf(f,"]");
+		break;
+
+		case AST_EXPR_FUNCTION: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,"(");astMakeCode(n->sons[1],f);fprintf(f,")");	
+		break;
+
+		case AST_NEG: fprintf(f,"~");astMakeCode(n->sons[0],f);break;
+		case AST_DOLLAR: fprintf(f,"$");astMakeCode(n->sons[0],f);break;
+		case AST_HASHTAG: fprintf(f,"#");astMakeCode(n->sons[0],f);break;
+
+		case AST_ADD: astMakeCode(n->sons[0],f);fprintf(f,"+");astMakeCode(n->sons[1],f);break;
+		case AST_SUB:  astMakeCode(n->sons[0],f);fprintf(f,"-");astMakeCode(n->sons[1],f);break;
+		case AST_MULT:  astMakeCode(n->sons[0],f);fprintf(f,"*");astMakeCode(n->sons[1],f);break;
+		case AST_DIV:  astMakeCode(n->sons[0],f);fprintf(f,"/");astMakeCode(n->sons[1],f);break;
+		case AST_LESS: astMakeCode(n->sons[0],f);fprintf(f,"<");astMakeCode(n->sons[1],f);break;
+		case AST_GREATER: astMakeCode(n->sons[0],f);fprintf(f,">");astMakeCode(n->sons[1],f);break;
+		case AST_OR: astMakeCode(n->sons[0],f);fprintf(f,"|");astMakeCode(n->sons[1],f);break;
+		case AST_AND: astMakeCode(n->sons[0],f);fprintf(f,"&");astMakeCode(n->sons[1],f);break;
+		case AST_LE: astMakeCode(n->sons[0],f);fprintf(f,"<=");astMakeCode(n->sons[1],f);break;
+		case AST_GE: astMakeCode(n->sons[0],f);fprintf(f,">=");astMakeCode(n->sons[1],f);break;
+		case AST_EQ: astMakeCode(n->sons[0],f);fprintf(f,"==");astMakeCode(n->sons[1],f);break;
+		case AST_DIF: astMakeCode(n->sons[0],f);fprintf(f,"!=");astMakeCode(n->sons[1],f);break;
+		case AST_FUNC_ARGUMENTS: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,",");
+			astMakeCode(n->sons[1],f);
+		break;
+		case AST_LEFT_ASSIGN: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,"<-");
+			astMakeCode(n->sons[1],f);
+		break;
+		case AST_RIGHT_ASSIGN:
+			astMakeCode(n->sons[0],f);
+			fprintf(f,"->");
+			astMakeCode(n->sons[1],f);
+		break;
+		case AST_LEFT_ASSIGN_VEC: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,"["); astMakeCode(n->sons[1],f); fprintf(f,"]");
+			fprintf(f,"<-");
+			astMakeCode(n->sons[2],f);
+		break;
+		case AST_RIGHT_ASSIGN_VEC: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,"->");
+			fprintf(f,"["); astMakeCode(n->sons[1],f); fprintf(f,"]");
+			astMakeCode(n->sons[2],f);
+		break;
+
+		case AST_PRINT: fprintf(f,"print ");astMakeCode(n->sons[0],f);break;
+		case AST_PRINTLST_STRING: 
+			astMakeCode(n->sons[0],f);fprintf(f,",");astMakeCode(n->sons[1],f);
+		break;	
+		case AST_PRINTLST_EXPR: 
+			astMakeCode(n->sons[0],f);fprintf(f,",");astMakeCode(n->sons[1],f);
+		break;	
+
+		case AST_READ: fprintf(f,"read ");astMakeCode(n->sons[0],f);break;
+		case AST_RETURN: fprintf(f,"return ");astMakeCode(n->sons[0],f);break;
+		case AST_IF: 
+			fprintf(f,"if(");astMakeCode(n->sons[0],f);fprintf(f,")");
+			fprintf(f,"then ");astMakeCode(n->sons[1],f);
+		break;
+		case AST_IFELSE:
+			fprintf(f,"if(");astMakeCode(n->sons[0],f);fprintf(f,")");
+			fprintf(f,"then ");astMakeCode(n->sons[1],f);
+			fprintf(f,"else ");astMakeCode(n->sons[2],f);
+		break;
+		case AST_WHILE: 
+			fprintf(f,"while(");astMakeCode(n->sons[0],f);
+			fprintf(f,")");astMakeCode(n->sons[1],f);
+		break;
+		case AST_BLOCK: 
+			fprintf(f,"{");
+			astMakeCode(n->sons[0],f);
+			fprintf(f,"}");
+		break;
+		case AST_BLOCKLST: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,";\n");
+			astMakeCode(n->sons[1],f);
+		break;
+		case AST_KW_BOOL: fprintf(f,"bool");break;
+		case AST_KW_POINTER: fprintf(f,"pointer");break;
+		case AST_KW_INT: fprintf(f,"int");break;
+		case AST_KW_CHAR: fprintf(f,"char");break;
+		case AST_FUNCTION: 
+			astMakeCode(n->sons[0],f);
+			astMakeCode(n->sons[1],f);
+			fprintf(f,"(");
+			astMakeCode(n->sons[2],f);
+			fprintf(f,")");
+			astMakeCode(n->sons[3],f);
+		break;
+
+		case AST_LST_PAR: 
+			astMakeCode(n->sons[0],f);
+			astMakeCode(n->sons[1],f);
+			fprintf(f,",");
+			astMakeCode(n->sons[2],f);
+		break;
+		case AST_LST_PAREND: 
+			astMakeCode(n->sons[0],f);
+			astMakeCode(n->sons[1],f);
+		break;
+
+		case AST_DECL_LIT: 
+			astMakeCode(n->sons[0],f);
+			astMakeCode(n->sons[1],f);
+			fprintf(f,":");
+			astMakeCode(n->sons[2],f);
+		break; 
+
+		case AST_DECL_VEC: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,"["); astMakeCode(n->sons[1],f); fprintf(f,"]");
+			astMakeCode(n->sons[2],f);
+			fprintf(f,":");
+			astMakeCode(n->sons[3],f);
+		break; 
+		case AST_DECL_VEC_EMPTY: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,"["); astMakeCode(n->sons[1],f); fprintf(f,"]");
+			astMakeCode(n->sons[2],f);
+		break; 
+
+		case AST_LST_VEC1: astMakeCode(n->sons[0],f);astMakeCode(n->sons[1],f);break; 
+		case AST_LST_VEC2: astMakeCode(n->sons[0],f);;break; 
+
+		case AST_LST_DECL: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,";\n");
+			astMakeCode(n->sons[1],f);
+		break;
+		case AST_LST_FUNC: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,";\n");
+			astMakeCode(n->sons[1],f);
+		break;
+
+		case AST_LSTEND_DECL:
+			astMakeCode(n->sons[0],f);
+			fprintf(f,";\n");
+		break;
+
+		case AST_LSTEND_FUNC: 
+			astMakeCode(n->sons[0],f);
+			fprintf(f,";\n");
+		break;
+		default: fprintf(f,"UNKNOWN DEFAULT");break;
+
+	}
+
+
+
 }
 

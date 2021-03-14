@@ -1,8 +1,9 @@
 
 int main(){
 	
-	hey <- 32;
-	print "Love";
-	print "Love";
-	print "Love";
+	while (i<10)
+    {
+    i <- incn(i,1);
+    a <- incn(a,1);
+    };
 };

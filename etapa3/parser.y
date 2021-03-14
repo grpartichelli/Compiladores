@@ -81,7 +81,7 @@ FILE* outfile;
 
 %%
 
-inicio: programa {astPrint($1,0);}
+inicio: programa {astMakeCode($1,outfile);astPrint($1,0);}
 		;
 
 programa: 
@@ -132,7 +132,7 @@ command:
 	| assign {$$ = $1;}
 	| KW_PRINT print { $$ = astGenerate(AST_PRINT,0,$2,0,0,0);}
 	| KW_IF '(' expr ')' KW_THEN command { $$ = astGenerate(AST_IF,0,$3,$6,0,0);}
-	| KW_IF '(' expr ')' KW_THEN command KW_ELSE command { $$ = astGenerate(AST_IFTHEN,0,$3,$6,$8,0);}
+	| KW_IF '(' expr ')' KW_THEN command KW_ELSE command { $$ = astGenerate(AST_IFELSE,0,$3,$6,$8,0);}
 	| KW_WHILE '(' expr ')' command  {$$ = astGenerate(AST_WHILE,0,$3,$5,0,0);}
 	| {$$ = 0;}
 	;

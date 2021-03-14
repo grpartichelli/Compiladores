@@ -41,7 +41,7 @@
 #define AST_READ 27
 #define AST_RETURN 28
 #define AST_IF 29
-#define AST_IFTHEN 30
+#define AST_IFELSE 30
 #define AST_WHILE 31
 #define AST_BLOCK 32
 #define AST_BLOCKLST 33
