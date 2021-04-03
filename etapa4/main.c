@@ -54,7 +54,7 @@ int main(int argc, char **argv){
 
 
 	printf("Número de Linhas: %d\n",getLineNumber());
-	//printHash();
+	printHash();
 
 
 	if(get_semantic_errors()){

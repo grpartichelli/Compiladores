@@ -22,10 +22,11 @@
 #include <stdlib.h>
 #include "ast.h"
 #include "hash.h"
+#include "semantic.h"
 int getLineNumber();
 int yylex();
 FILE* outfile;
-#line 11 "parser.y"
+#line 12 "parser.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
@@ -37,7 +38,7 @@ typedef union{
 	ast *ast;
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 41 "y.tab.c"
+#line 42 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -465,7 +466,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 209 "parser.y"
+#line 210 "parser.y"
 
 int yyerror(){
 	
@@ -476,7 +477,7 @@ int yyerror(){
 void loadOutFile(FILE *saida){
 	outfile = saida;
 }
-#line 480 "y.tab.c"
+#line 481 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -679,282 +680,282 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 84 "parser.y"
-	{astMakeCode(yystack.l_mark[0].ast,outfile);/*astPrint($1,0);*/}
+#line 85 "parser.y"
+	{check_and_set_declarations(yystack.l_mark[0].ast);astMakeCode(yystack.l_mark[0].ast,outfile);/*astPrint($1,0);*/}
 break;
 case 2:
-#line 88 "parser.y"
+#line 89 "parser.y"
 	{yyval.ast = astGenerate(AST_LST_DECL,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 3:
-#line 89 "parser.y"
+#line 90 "parser.y"
 	{yyval.ast = astGenerate(AST_LST_FUNC,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 4:
-#line 90 "parser.y"
+#line 91 "parser.y"
 	{yyval.ast = astGenerate(AST_LSTEND_DECL,0,yystack.l_mark[-1].ast,0,0,0);}
 break;
 case 5:
-#line 91 "parser.y"
+#line 92 "parser.y"
 	{yyval.ast = astGenerate(AST_LSTEND_FUNC,0,yystack.l_mark[-1].ast,0,0,0);}
 break;
 case 6:
-#line 95 "parser.y"
+#line 96 "parser.y"
 	{yyval.ast = astGenerate(AST_DECL_LIT,0,yystack.l_mark[-3].ast,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0);}
 break;
 case 7:
-#line 96 "parser.y"
+#line 97 "parser.y"
 	{yyval.ast = astGenerate(AST_DECL_VEC,0,yystack.l_mark[-6].ast,yystack.l_mark[-4].ast,yystack.l_mark[-2].ast,yystack.l_mark[0].ast);}
 break;
 case 8:
-#line 97 "parser.y"
+#line 98 "parser.y"
 	{yyval.ast = astGenerate(AST_DECL_VEC_EMPTY,0,yystack.l_mark[-4].ast,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0);}
 break;
 case 9:
-#line 101 "parser.y"
+#line 102 "parser.y"
 	{yyval.ast = astGenerate(AST_KW_BOOL,0,0,0,0,0);}
 break;
 case 10:
-#line 102 "parser.y"
+#line 103 "parser.y"
 	{yyval.ast = astGenerate(AST_KW_CHAR,0,0,0,0,0);}
 break;
 case 11:
-#line 103 "parser.y"
+#line 104 "parser.y"
 	{yyval.ast = astGenerate(AST_KW_INT,0,0,0,0,0);}
 break;
 case 12:
-#line 104 "parser.y"
+#line 105 "parser.y"
 	{yyval.ast = astGenerate(AST_KW_POINTER,0,0,0,0,0);}
 break;
 case 13:
-#line 109 "parser.y"
+#line 110 "parser.y"
 	{yyval.ast = astGenerate(AST_LST_VEC1,0,yystack.l_mark[-1].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 14:
-#line 110 "parser.y"
+#line 111 "parser.y"
 	{yyval.ast = astGenerate(AST_LST_VEC2,0,yystack.l_mark[0].ast,0,0,0);}
 break;
 case 15:
-#line 115 "parser.y"
+#line 116 "parser.y"
 	{yyval.ast = astGenerate(AST_FUNCTION,0,yystack.l_mark[-5].ast,yystack.l_mark[-4].ast,yystack.l_mark[-2].ast,yystack.l_mark[0].ast);}
 break;
 case 16:
-#line 120 "parser.y"
+#line 121 "parser.y"
 	{yyval.ast = yystack.l_mark[0].ast;}
 break;
 case 17:
-#line 121 "parser.y"
+#line 122 "parser.y"
 	{yyval.ast = 0;}
 break;
 case 18:
-#line 125 "parser.y"
+#line 126 "parser.y"
 	{yyval.ast = astGenerate(AST_LST_PAR,0,yystack.l_mark[-3].ast,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0);}
 break;
 case 19:
-#line 126 "parser.y"
+#line 127 "parser.y"
 	{yyval.ast = astGenerate(AST_LST_PAREND,0,yystack.l_mark[-1].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 20:
-#line 129 "parser.y"
+#line 130 "parser.y"
 	{ yyval.ast = astGenerate(AST_BLOCK,0,yystack.l_mark[-1].ast,0,0,0);}
 break;
 case 21:
-#line 130 "parser.y"
+#line 131 "parser.y"
 	{ yyval.ast = astGenerate(AST_READ,0,yystack.l_mark[0].ast,0,0,0);}
 break;
 case 22:
-#line 131 "parser.y"
+#line 132 "parser.y"
 	{ yyval.ast = astGenerate(AST_RETURN,0,yystack.l_mark[0].ast,0,0,0);}
 break;
 case 23:
-#line 132 "parser.y"
+#line 133 "parser.y"
 	{yyval.ast = yystack.l_mark[0].ast;}
 break;
 case 24:
-#line 133 "parser.y"
+#line 134 "parser.y"
 	{ yyval.ast = astGenerate(AST_PRINT,0,yystack.l_mark[0].ast,0,0,0);}
 break;
 case 25:
-#line 134 "parser.y"
+#line 135 "parser.y"
 	{ yyval.ast = astGenerate(AST_IF,0,yystack.l_mark[-3].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 26:
-#line 135 "parser.y"
+#line 136 "parser.y"
 	{ yyval.ast = astGenerate(AST_IFELSE,0,yystack.l_mark[-5].ast,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0);}
 break;
 case 27:
-#line 136 "parser.y"
+#line 137 "parser.y"
 	{yyval.ast = astGenerate(AST_WHILE,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 28:
-#line 137 "parser.y"
+#line 138 "parser.y"
 	{yyval.ast = 0;}
 break;
 case 29:
-#line 141 "parser.y"
+#line 142 "parser.y"
 	{ yyval.ast = astGenerate(AST_BLOCKLST,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 30:
-#line 142 "parser.y"
+#line 143 "parser.y"
 	{yyval.ast = 0;}
 break;
 case 31:
-#line 145 "parser.y"
-	{ yyval.ast = yystack.l_mark[0].ast;}
-break;
-case 32:
 #line 146 "parser.y"
 	{ yyval.ast = yystack.l_mark[0].ast;}
 break;
-case 33:
+case 32:
 #line 147 "parser.y"
+	{ yyval.ast = yystack.l_mark[0].ast;}
+break;
+case 33:
+#line 148 "parser.y"
 	{ yyval.ast = astGenerate(AST_PRINTLST_STRING,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 34:
-#line 148 "parser.y"
+#line 149 "parser.y"
 	{ yyval.ast = astGenerate(AST_PRINTLST_EXPR,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 35:
-#line 152 "parser.y"
+#line 153 "parser.y"
 	{ yyval.ast = astGenerate(AST_LEFT_ASSIGN,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 36:
-#line 153 "parser.y"
+#line 154 "parser.y"
 	{ yyval.ast = astGenerate(AST_LEFT_ASSIGN_VEC,0,yystack.l_mark[-5].ast,yystack.l_mark[-3].ast,yystack.l_mark[0].ast,0);}
 break;
 case 37:
-#line 154 "parser.y"
+#line 155 "parser.y"
 	{ yyval.ast = astGenerate(AST_RIGHT_ASSIGN,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 38:
-#line 155 "parser.y"
+#line 156 "parser.y"
 	{ yyval.ast = astGenerate(AST_RIGHT_ASSIGN_VEC,0,yystack.l_mark[-5].ast,yystack.l_mark[-3].ast,yystack.l_mark[-1].ast,0);}
 break;
 case 39:
-#line 158 "parser.y"
+#line 159 "parser.y"
 	{ yyval.ast = astGenerate(AST_PARENTESIS,0,yystack.l_mark[-1].ast,0,0,0);}
 break;
 case 40:
-#line 159 "parser.y"
+#line 160 "parser.y"
 	{ yyval.ast = yystack.l_mark[0].ast;}
 break;
 case 41:
-#line 160 "parser.y"
+#line 161 "parser.y"
 	{ yyval.ast = astGenerate(AST_VECTOR,0,yystack.l_mark[-3].ast,yystack.l_mark[-1].ast,0,0);}
 break;
 case 42:
-#line 161 "parser.y"
+#line 162 "parser.y"
 	{yyval.ast = yystack.l_mark[0].ast;}
 break;
 case 43:
-#line 162 "parser.y"
+#line 163 "parser.y"
 	{ yyval.ast = astGenerate(AST_EXPR_FUNCTION,0,yystack.l_mark[-3].ast,yystack.l_mark[-1].ast,0,0);}
 break;
 case 44:
-#line 163 "parser.y"
+#line 164 "parser.y"
 	{ yyval.ast = astGenerate(AST_NEG,0,yystack.l_mark[0].ast,0,0,0);}
 break;
 case 45:
-#line 164 "parser.y"
+#line 165 "parser.y"
 	{ yyval.ast = astGenerate(AST_DOLLAR,0,yystack.l_mark[0].ast,0,0,0);}
 break;
 case 46:
-#line 165 "parser.y"
+#line 166 "parser.y"
 	{ yyval.ast = astGenerate(AST_HASHTAG,0,yystack.l_mark[0].ast,0,0,0);}
 break;
 case 47:
-#line 166 "parser.y"
+#line 167 "parser.y"
 	{yyval.ast = astGenerate(AST_ADD,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 48:
-#line 167 "parser.y"
+#line 168 "parser.y"
 	{yyval.ast = astGenerate(AST_SUB,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 49:
-#line 168 "parser.y"
+#line 169 "parser.y"
 	{yyval.ast = astGenerate(AST_MULT,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 50:
-#line 169 "parser.y"
+#line 170 "parser.y"
 	{yyval.ast = astGenerate(AST_DIV,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 51:
-#line 170 "parser.y"
+#line 171 "parser.y"
 	{yyval.ast = astGenerate(AST_LESS,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 52:
-#line 171 "parser.y"
+#line 172 "parser.y"
 	{yyval.ast = astGenerate(AST_GREATER,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 53:
-#line 172 "parser.y"
+#line 173 "parser.y"
 	{yyval.ast = astGenerate(AST_OR,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 54:
-#line 173 "parser.y"
+#line 174 "parser.y"
 	{yyval.ast = astGenerate(AST_AND,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 55:
-#line 174 "parser.y"
+#line 175 "parser.y"
 	{yyval.ast = astGenerate(AST_LE,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 56:
-#line 175 "parser.y"
+#line 176 "parser.y"
 	{yyval.ast = astGenerate(AST_GE,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 57:
-#line 176 "parser.y"
+#line 177 "parser.y"
 	{yyval.ast = astGenerate(AST_EQ,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 58:
-#line 177 "parser.y"
+#line 178 "parser.y"
 	{yyval.ast = astGenerate(AST_DIF,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 59:
-#line 180 "parser.y"
+#line 181 "parser.y"
 	{yyval.ast = yystack.l_mark[0].ast;}
 break;
 case 60:
-#line 181 "parser.y"
+#line 182 "parser.y"
 	{yyval.ast = 0;}
 break;
 case 61:
-#line 184 "parser.y"
+#line 185 "parser.y"
 	{yyval.ast = astGenerate(AST_FUNC_ARGUMENTS,0,yystack.l_mark[-2].ast,yystack.l_mark[0].ast,0,0);}
 break;
 case 62:
-#line 185 "parser.y"
+#line 186 "parser.y"
 	{yyval.ast = yystack.l_mark[0].ast;}
 break;
 case 63:
-#line 189 "parser.y"
+#line 190 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 64:
-#line 193 "parser.y"
+#line 194 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 65:
-#line 196 "parser.y"
+#line 197 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 66:
-#line 200 "parser.y"
+#line 201 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 67:
-#line 201 "parser.y"
+#line 202 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0); }
 break;
 case 68:
-#line 202 "parser.y"
+#line 203 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 69:
-#line 203 "parser.y"
+#line 204 "parser.y"
 	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0); }
 break;
-#line 958 "y.tab.c"
+#line 959 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;
