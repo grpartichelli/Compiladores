@@ -3,15 +3,14 @@ int y: 200;
 bool boolean: true;
 char c: 'a';
 pointer p: 0;
-int [10] vec;
+pointer [10] vec;
 
-pointer foo(int video){
-	;
+int foo(int video){
+
 };
 
-int main(int amor, char dor, bool love, pointer ps, int lol){
+pointer main(int amo){
 	
-	x <- foo(x);
 
 };
 

@@ -7,4 +7,6 @@ int[ 10 ] vec ;
 pointer foo (int video ){;
 };
 int main (int amor ,char dor ,bool love ,pointer ps ,int lol ){ x <- foo ( x );
+if( 20 )then {return  20 ;
+};
 };

@@ -224,7 +224,9 @@ int check_num_identifier(ast *n){
 
 int operator_is_num(ast *n){
 
-	return (n->type == AST_ADD ||
+
+	return (
+			n->type == AST_ADD ||
 			n->type == AST_SUB ||
 			n->type == AST_MULT ||
 			n->type == AST_DIV ||
@@ -233,7 +235,9 @@ int operator_is_num(ast *n){
 			n->type == AST_SYMBOL_CHAR ||
 			check_num_identifier(n)    ||
 			(n->type == AST_VECTOR && check_num_identifier(n->sons[0]))||
-			(n->type == AST_EXPR_FUNCTION && check_num_identifier(n->sons[0])));
+			(n->type == AST_EXPR_FUNCTION && check_num_identifier(n->sons[0])) ||
+			(n->type == AST_HASHTAG && operator_is_pointer(n->sons[0]))
+			);
 }
 
 void check_types_num_op(ast *n1, ast *n2,char* op){
@@ -315,12 +319,38 @@ void check_types_num_bool_op(ast *n1, ast *n2,char* op){
 }
 
 int check_pointer_identifier(ast *n){
-	return (n->symbol != 0 && (n->symbol->datatype == DATATYPE_POINTER ));
+	return (n->symbol != 0 && n->type != AST_SYMBOL_INT
+						   && n->type != AST_SYMBOL_CHAR
+						   && n->type != AST_SYMBOL_TRUE
+						   && n->type != AST_SYMBOL_FALSE
+		);
+}
+
+int operator_is_identifier(ast *n){
+	printf("%d \n", n->type);
+	
+	if(n==0){
+		return 0;
+	}
+
+	if(n->type == AST_SYMBOL_IDENTIFIER){	
+		return 1;
+	}
+	else{
+		return operator_is_identifier(n->sons[0]);
+	}
+	
+							 
 }
 
 int operator_is_pointer(ast *n){
+	int dollar_check = 0;
+	if(n->type == AST_DOLLAR){
+		dollar_check = operator_is_identifier(n->sons[0]);
+	}
 
-	return( check_pointer_identifier(n)    ||
+	return( dollar_check ||
+			check_pointer_identifier(n)    ||
 			(n->type == AST_VECTOR && check_pointer_identifier(n->sons[0]))||
 			(n->type == AST_EXPR_FUNCTION && check_pointer_identifier(n->sons[0])));
 }
@@ -395,7 +425,12 @@ void check_types_add_sub_op(ast *n1, ast *n2,char* op){
 
 }
 
+int compare_types(ast* a, ast*b){
 
+	return (operator_is_num(a) && operator_is_num(b)) ||
+	   (operator_is_bool(a) && operator_is_bool(b)) ||
+	   (operator_is_pointer(a) && operator_is_pointer(b));
+}
 int check_func_pars(ast* list1, ast* list2){
 
 	if(list1 == 0 && list2 == 0){
@@ -411,23 +446,61 @@ int check_func_pars(ast* list1, ast* list2){
 
 	if(list2->type != AST_FUNC_ARGUMENTS){
 		
-		if((operator_is_num(list1->sons[1]) && operator_is_num(list2)) ||
-	   (operator_is_bool(list1->sons[1]) && operator_is_bool(list2)) ||
-	   (operator_is_pointer(list1->sons[1]) && operator_is_pointer(list2))){
-		
+		if(compare_types(list1->sons[1],list2)){
 			return 1 && check_func_pars(list1->sons[2], 0);
 		} 	
 
 	}else{
-
-		if((operator_is_num(list1->sons[1]) && operator_is_num(list2->sons[0])) ||
-	   (operator_is_bool(list1->sons[1]) && operator_is_bool(list2->sons[0])) ||
-	   (operator_is_pointer(list1->sons[1]) && operator_is_pointer(list2->sons[0]))){
-		
+		if(compare_types(list1->sons[1], list2->sons[0])){
 			return 1 && check_func_pars(list1->sons[2], list2->sons[1]);
 		} 	
 	}
 	return 0;
+	
+}
+
+void check_returns(ast *n, int type){
+	
+	if(n==0)
+		return;
+	
+	if(n->type == AST_RETURN){
+		switch(type){
+			case DATATYPE_INT:
+				if(!operator_is_num(n->sons[0])){
+					printf("Function has invalid return, should be number.\n");
+					semantic_errors++;
+				}
+			break;
+			case DATATYPE_CHAR:
+				if(!operator_is_num(n->sons[0])){
+					printf("Function has invalid return, should be number.\n");
+					semantic_errors++;
+				}
+			break;
+			case DATATYPE_POINTER:
+				if(!operator_is_pointer(n->sons[0])){
+					printf("Function has invalid return, should be pointer.\n");
+					semantic_errors++;
+				}
+			break;
+			case DATATYPE_BOOL:
+				if(!operator_is_bool(n->sons[0])){
+					printf("Function has invalid return, should be bool.\n");
+					semantic_errors++;
+				}
+			break;
+		}
+
+	} else{
+		for(int i=0;i<NUM_SONS;i++){
+
+			check_returns(n->sons[i],type);
+		}
+
+	}
+
+	return;
 	
 }
 
@@ -437,6 +510,9 @@ void check_types(ast *n){
 		return;
 
 	switch(n->type){
+		case AST_FUNCTION:
+			check_returns(n->sons[3],n->sons[1]->symbol->datatype);
+		break;
 		case AST_ADD:
 			check_types_add_sub_op(n->sons[0],n->sons[1],"+");
 		break;
@@ -507,9 +583,70 @@ void check_types(ast *n){
 				printf("ERROR: Function call %s() has wrong parameters.\n",n->sons[0]->symbol->content);
 				semantic_errors++;
 			}
-				
+		break;		
+		case  AST_IF:
+			if(!operator_is_bool(n->sons[0])){
+					printf("ERROR: If doesn't have a boolean.\n");
+					semantic_errors++;
+				}
+		break;
+		case  AST_IFELSE:
+			if(!operator_is_bool(n->sons[0])){
+					printf("ERROR: If Else doesnt have a boolean.\n");
+					semantic_errors++;
+				}
+		break;
+
+		case  AST_WHILE:
+			if(!operator_is_bool(n->sons[0])){
+					printf("ERROR: While doesnt have a boolean.\n");
+					semantic_errors++;
+				}
+		break;
+
+		case AST_LEFT_ASSIGN:
+			if(!compare_types(n->sons[0],n->sons[1])){
+				printf("ERROR: Left assign has different types.\n");
+					semantic_errors++;
+			}	
+		break;
+		case AST_RIGHT_ASSIGN:
+			if(!compare_types(n->sons[0],n->sons[1])){
+				printf("ERROR: Right assign has different types.\n");
+					semantic_errors++;
+			}	
+		break;
+		
+		case AST_LEFT_ASSIGN_VEC:
+			if(!compare_types(n->sons[0],n->sons[2])){
+				printf("ERROR: Vector left assign has different types.\n");
+					semantic_errors++;
+			}
+
+			if(operator_is_num(n->sons[1])){
+				printf("ERROR: Vector left assign has non-number index.\n");
+					semantic_errors++;
+			}
 
 		break;
+		case AST_RIGHT_ASSIGN_VEC:
+
+			if(!compare_types(n->sons[0],n->sons[1])){
+					printf("ERROR: Vector right assign has different types.\n");
+						semantic_errors++;
+				}
+
+				if(operator_is_num(n->sons[2])){
+					printf("ERROR: Vector right assign has non-number index.\n");
+						semantic_errors++;
+				}
+
+		break;
+
+		case AST_RETURN:
+
+		break;
+		
 	}
 
 	for(int i =0;i<NUM_SONS; i++){

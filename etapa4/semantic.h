@@ -39,4 +39,7 @@ int operator_is_pointer(ast *n);
 void check_types_pointer_op(ast *n, char* op);
 int check_for_pointer(ast *n);
 
+int compare_types(ast* a, ast*b);
+int check_func_pars(ast* list1, ast* list2);
+
 #endif
