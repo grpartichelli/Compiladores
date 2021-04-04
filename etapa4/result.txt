@@ -6,6 +6,5 @@ pointer p : 0 ;
 int[ 10 ] vec ;
 pointer foo (){;
 };
-int main (int amor ,int dor ,int love ){ x <-$ p ;
- x <-# p ;
+int main (int amor ,int dor ,int love ){ x <- 32 + p + 20 - 20 ;
 };

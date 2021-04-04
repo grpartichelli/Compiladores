@@ -340,6 +340,60 @@ void check_types_pointer_op(ast *n, char* op){
 	
 
 }
+int check_for_pointer(ast *n){
+	
+	if(n == 0 ){
+		return 0;
+	}
+	
+	if( operator_is_pointer(n)){
+		return 1;
+	} 
+	else{ return (check_for_pointer(n->sons[0])  || 
+				check_for_pointer(n->sons[1]) ||
+				check_for_pointer(n->sons[2]) || 
+				check_for_pointer(n->sons[3]) );
+	}
+
+	return -1;
+
+
+}
+
+void check_types_add_sub_op(ast *n1, ast *n2,char* op){
+
+	if(n1 == 0 || n2 == 0){
+		if(debug)
+			printf("unexpected problem at check_types_num_op");
+		return;
+	}
+
+	if( !(n1->type == AST_SYMBOL_INT  || n1->type == AST_SYMBOL_CHAR)){
+		if(check_for_pointer(n2)){
+			printf("ERROR: Operand of %s not allowed with pointer.\n",op);
+			semantic_errors++;
+		}
+	}
+
+	if( !(n2->type == AST_SYMBOL_INT  || n2->type == AST_SYMBOL_CHAR)){
+		if(check_for_pointer(n1)){
+			printf("ERROR: Operand of %s not allowed with pointer.\n",op);
+			semantic_errors++;
+		}
+	}
+
+	if(!operator_is_pointer(n1) && !operator_is_pointer(n2)){
+		if(!operator_is_num(n1)){
+			printf("ERROR: Left operand of %s is not a number.\n", op);
+			semantic_errors++;
+		}
+		if(!operator_is_num(n2)){
+			printf("ERROR: Right operand of %s is not a number.\n",op);
+			semantic_errors++;
+		}
+	}
+
+}
 
 
 void check_types(ast *n){
@@ -349,10 +403,10 @@ void check_types(ast *n){
 
 	switch(n->type){
 		case AST_ADD:
-			check_types_num_op(n->sons[0],n->sons[1],"+");
+			check_types_add_sub_op(n->sons[0],n->sons[1],"+");
 		break;
 		case AST_SUB:
-			check_types_num_op(n->sons[0],n->sons[1],"-");
+			check_types_add_sub_op(n->sons[0],n->sons[1],"-");
 		break;
 		case AST_DIV:
 			check_types_num_op(n->sons[0],n->sons[1],"/");

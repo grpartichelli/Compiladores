@@ -37,5 +37,6 @@ void check_types_num_bool_op(ast *n1, ast *n2,char* op);
 int check_pointer_identifier(ast *n);
 int operator_is_pointer(ast *n);
 void check_types_pointer_op(ast *n, char* op);
+int check_for_pointer(ast *n);
 
 #endif
