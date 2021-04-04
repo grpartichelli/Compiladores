@@ -40,6 +40,7 @@ void printHash();//Imprime a tabela
 node *getHash(char *content);//Procura por um nodo na tabela e retorna
 node* putHash(int type, char *content);//Adiciona um nodo a tabela
 int getAddress(char *content); //Devolve o endereço do nodo na hash
+int hash_check_undeclared();
 
 
 #endif

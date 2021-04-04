@@ -90,7 +90,7 @@ void ast_decl_vec_empty_check_set(ast *n, int kw){
 	}
 	else{
 
-		n->symbol->type = SYMBOL_VARIABLE;
+		n->symbol->type = SYMBOL_VECTOR;
 		n->symbol->datatype = get_type_of_keyword(kw);
 		
 	}
@@ -113,7 +113,7 @@ void ast_decl_vec_check_set(ast *n, int kw, ast *list){
 	}
 	else{
 
-		n->symbol->type = SYMBOL_VARIABLE;
+		n->symbol->type = SYMBOL_VECTOR;
 		n->symbol->datatype = get_type_of_keyword(kw);
 
 		dec_node = list;
@@ -139,6 +139,51 @@ void ast_decl_vec_check_set(ast *n, int kw, ast *list){
 }
 
 
+void ast_function_check_set(ast *n, int kw, ast *list){
+
+	ast *par;
+
+	if(!n->symbol || !n->symbol->content)
+		return;
+
+	if(n->symbol->type != SYMBOL_IDENTIFIER){
+		printf("ERROR: Identifier %s already declared.\n",n->symbol->content);
+		semantic_errors++;
+	
+	}
+	else{
+
+		n->symbol->type = SYMBOL_FUNCTION;
+		n->symbol->datatype = get_type_of_keyword(kw);
+
+		//Now the parameters
+		par = list;
+		while(par){
+			
+			kw = par->sons[0]->type;
+
+			if(par->sons[1]->symbol->type != SYMBOL_IDENTIFIER){
+				printf("ERROR: Identifier %s already declared.\n",par->sons[1]->symbol->content);
+				semantic_errors++;
+			}
+			else{
+				par->sons[1]->symbol->type = SYMBOL_VARIABLE;
+				par->sons[1]->symbol->datatype = get_type_of_keyword(kw);
+				
+			}
+			
+			par = par->sons[2];
+
+
+		}
+		
+		
+	}	
+		
+
+}
+
+
 			
 void check_and_set_declarations(ast* n){
 	if(!n)
@@ -155,6 +200,9 @@ void check_and_set_declarations(ast* n){
 		case AST_DECL_VEC:
 			ast_decl_vec_check_set(n->sons[2],n->sons[0]->type, n->sons[3]);
 		break;
+		case AST_FUNCTION:
+			ast_function_check_set(n->sons[1],n->sons[0]->type, n->sons[2]);
+		break;
 
 
 	}
@@ -165,6 +213,9 @@ void check_and_set_declarations(ast* n){
 
 }
 
+void check_undeclared(){
+	semantic_errors +=hash_check_undeclared();
+}
 
 int get_semantic_errors(){
 

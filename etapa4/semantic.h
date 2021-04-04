@@ -18,7 +18,10 @@ int is_datatype_compatible(int dtype1, int dtype2);
 int get_symbol_type(int type_symbol);
 
 void ast_decl_vec_empty_check_set(ast *n, int kw);
-void ast_decl_vec(ast *n, int kw);
+void ast_decl_vec_check_set(ast *n, int kw, ast *list);
+
+void ast_function_check_set(ast *n, int kw, ast*list);
+
 
 
 

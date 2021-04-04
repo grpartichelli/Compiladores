@@ -82,7 +82,7 @@ FILE* outfile;
 
 %%
 
-inicio: programa {check_and_set_declarations($1);astMakeCode($1,outfile);/*astPrint($1,0);*/}
+inicio: programa {check_and_set_declarations($1);check_undeclared();astMakeCode($1,outfile);/*astPrint($1,0);*/}
 		;
 
 programa: 

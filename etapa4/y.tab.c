@@ -681,7 +681,7 @@ yyreduce:
     {
 case 1:
 #line 85 "parser.y"
-	{check_and_set_declarations(yystack.l_mark[0].ast);astMakeCode(yystack.l_mark[0].ast,outfile);/*astPrint($1,0);*/}
+	{check_and_set_declarations(yystack.l_mark[0].ast);check_undeclared();astMakeCode(yystack.l_mark[0].ast,outfile);/*astPrint($1,0);*/}
 break;
 case 2:
 #line 89 "parser.y"

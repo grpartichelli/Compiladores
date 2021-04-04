@@ -17,3 +17,22 @@ pointer myna32me: 321321;
 int [203] amor: 23 23 32 32  22;
 //int [203] odio: 23 23 32;
 //int [203] amor: 23 23 32;
+
+
+
+
+bool main(int amor, int dor, int love){
+	
+	return imsohappy;
+
+
+};
+
+
+int amor: 10;
+
+int main2(int love){
+	
+	lo2ve <- 20;
+
+};
