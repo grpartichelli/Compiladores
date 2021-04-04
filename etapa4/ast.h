@@ -5,7 +5,7 @@
 #include "hash.h"
 #define NUM_SONS 4 //recomendado
 
-#define AST_SYMBOL 0
+
 #define AST_PARENTESIS 1
 #define AST_VECTOR 2
 #define AST_EXPR_FUNCTION 3
@@ -66,7 +66,12 @@
 #define AST_LSTEND_DECL 48
 #define AST_LSTEND_FUNC 49
 
-
+#define AST_SYMBOL_INT 50
+#define AST_SYMBOL_CHAR 51
+#define AST_SYMBOL_TRUE 52
+#define AST_SYMBOL_FALSE 53
+#define AST_SYMBOL_IDENTIFIER 54
+#define AST_SYMBOL_STRING 55
 
 
 

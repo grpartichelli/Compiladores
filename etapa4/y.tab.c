@@ -929,31 +929,31 @@ case 62:
 break;
 case 63:
 #line 190 "parser.y"
-	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
+	{yyval.ast = astGenerate(AST_SYMBOL_IDENTIFIER,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 64:
 #line 194 "parser.y"
-	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
+	{yyval.ast = astGenerate(AST_SYMBOL_STRING,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 65:
 #line 197 "parser.y"
-	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
+	{yyval.ast = astGenerate(AST_SYMBOL_INT,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 66:
 #line 201 "parser.y"
-	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
+	{yyval.ast = astGenerate(AST_SYMBOL_INT,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 67:
 #line 202 "parser.y"
-	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0); }
+	{yyval.ast = astGenerate(AST_SYMBOL_TRUE,yystack.l_mark[0].symbol,0,0,0,0); }
 break;
 case 68:
 #line 203 "parser.y"
-	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0);}
+	{yyval.ast = astGenerate(AST_SYMBOL_FALSE,yystack.l_mark[0].symbol,0,0,0,0);}
 break;
 case 69:
 #line 204 "parser.y"
-	{yyval.ast = astGenerate(AST_SYMBOL,yystack.l_mark[0].symbol,0,0,0,0); }
+	{yyval.ast = astGenerate(AST_SYMBOL_CHAR,yystack.l_mark[0].symbol,0,0,0,0); }
 break;
 #line 959 "y.tab.c"
     }

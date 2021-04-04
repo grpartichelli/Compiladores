@@ -187,21 +187,21 @@ func_arguments_list:
 	;
 
 identifier: 
-	TK_IDENTIFIER {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);}//Identificador deve ser um nodo folha
+	TK_IDENTIFIER {$$ = astGenerate(AST_SYMBOL_IDENTIFIER,$1,0,0,0,0);}//Identificador deve ser um nodo folha
 	;
 
 string:
-	LIT_STRING{$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);} //String deve ser um nodo folha
+	LIT_STRING{$$ = astGenerate(AST_SYMBOL_STRING,$1,0,0,0,0);} //String deve ser um nodo folha
 	;
 int:
-	LIT_INTEGER{$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);} //Int deve ser um nodo folha
+	LIT_INTEGER{$$ = astGenerate(AST_SYMBOL_INT,$1,0,0,0,0);} //Int deve ser um nodo folha
 	;
 
 literals: 
-	LIT_INTEGER {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);} ////Deve ser um nodo folha
-	| LIT_TRUE {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0); }//Deve ser um nodo folha
-	| LIT_FALSE {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0);} //Deve ser um nodo folha
-	| LIT_CHAR {$$ = astGenerate(AST_SYMBOL,$1,0,0,0,0); }//Deve ser um nodo folha
+	LIT_INTEGER {$$ = astGenerate(AST_SYMBOL_INT,$1,0,0,0,0);} ////Deve ser um nodo folha
+	| LIT_TRUE {$$ = astGenerate(AST_SYMBOL_TRUE,$1,0,0,0,0); }//Deve ser um nodo folha
+	| LIT_FALSE {$$ = astGenerate(AST_SYMBOL_FALSE,$1,0,0,0,0);} //Deve ser um nodo folha
+	| LIT_CHAR {$$ = astGenerate(AST_SYMBOL_CHAR,$1,0,0,0,0); }//Deve ser um nodo folha
 	;
 
 

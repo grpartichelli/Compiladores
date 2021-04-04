@@ -27,7 +27,12 @@ void astPrint(ast *n, int level){
 	}
 
 	switch(n->type){
-		case AST_SYMBOL: printf("AST_SYMBOL=");break;
+		case AST_SYMBOL_INT: printf("AST_SYMBOL_INT");break;
+		case AST_SYMBOL_CHAR: printf("AST_SYMBOL_CHAR");break;
+		case AST_SYMBOL_TRUE: printf("AST_SYMBOL_TRUE");break;
+		case AST_SYMBOL_FALSE: printf("AST_SYMBOL_FALSE");break;
+		case AST_SYMBOL_STRING: printf("AST_SYMBOL_STRING");break;
+		case AST_SYMBOL_IDENTIFIER: printf("AST_SYMBOL_IDENTIFIER");break;
 		case AST_PARENTESIS:printf("AST_PARENTESIS");break;
 		case AST_VECTOR: printf("AST_VECTOR");break;
 		case AST_EXPR_FUNCTION: printf("AST_FUNCTION");break;
@@ -110,7 +115,22 @@ void astMakeCode(ast *n , FILE *f){
 		return;
 
 	switch(n->type){
-		case AST_SYMBOL: 
+		case AST_SYMBOL_INT: 
+			fprintf(f," %s ",n->symbol->content);
+		break;
+		case AST_SYMBOL_TRUE: 
+			fprintf(f," %s ",n->symbol->content);
+		break;
+		case AST_SYMBOL_FALSE: 
+			fprintf(f," %s ",n->symbol->content);
+		break;
+		case AST_SYMBOL_CHAR: 
+			fprintf(f," %s ",n->symbol->content);
+		break;
+		case AST_SYMBOL_STRING: 
+			fprintf(f," %s ",n->symbol->content);
+		break;
+		case AST_SYMBOL_IDENTIFIER: 
 			fprintf(f," %s ",n->symbol->content);
 		break;
 

@@ -1,2 +1,19 @@
-int hello: 10;
+/*
+int hello: true;
 
+bool hello2: false;
+bool hello3: 21321;
+
+bool hello4: true;
+
+char hello5: 321321;
+int hello6: 'a';
+char hello7: '3';
+
+pointer myname: false;
+pointer myna32me: 321321;
+*/
+
+int [203] amor: 23 23 32 32  22;
+//int [203] odio: 23 23 32;
+//int [203] amor: 23 23 32;
