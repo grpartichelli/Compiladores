@@ -22,7 +22,20 @@ void ast_decl_vec_check_set(ast *n, int kw, ast *list);
 
 void ast_function_check_set(ast *n, int kw, ast*list);
 
+void check_types(ast *n);
 
+int check_num_identifier(ast *n);
+int operator_is_num(ast *n);
+void check_types_num_op(ast *n1, ast *n2,char* op);
 
+int check_bool_identifier(ast *n);
+int operator_is_bool(ast *n);
+void check_types_bool_op(ast *n1, ast *n2,char* op);
+
+void check_types_num_bool_op(ast *n1, ast *n2,char* op);
+
+int check_pointer_identifier(ast *n);
+int operator_is_pointer(ast *n);
+void check_types_pointer_op(ast *n, char* op);
 
 #endif

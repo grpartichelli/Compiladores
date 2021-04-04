@@ -1,38 +1,18 @@
-/*
-int hello: true;
+int x: 300;
+int y: 200;
+bool boolean: true;
+char c: 'a';
+pointer p: 0;
+int [10] vec;
 
-bool hello2: false;
-bool hello3: 21321;
+pointer foo(){
+	;
+};
 
-bool hello4: true;
-
-char hello5: 321321;
-int hello6: 'a';
-char hello7: '3';
-
-pointer myname: false;
-pointer myna32me: 321321;
-*/
-
-int [203] amor: 23 23 32 32  22;
-//int [203] odio: 23 23 32;
-//int [203] amor: 23 23 32;
-
-
-
-
-bool main(int amor, int dor, int love){
+int main(int amor, int dor, int love){
 	
-	return imsohappy;
-
+	x <- $p;
+	x <- #p;
 
 };
 
-
-int amor: 10;
-
-int main2(int love){
-	
-	lo2ve <- 20;
-
-};

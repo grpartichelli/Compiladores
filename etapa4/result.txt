@@ -1,6 +1,11 @@
-int[ 203 ] amor : 23  23  32  32  22 ;
-bool main (int amor ,int dor ,int love ){return  imsohappy ;
+int x : 300 ;
+int y : 200 ;
+bool boolean : true ;
+char c : 'a' ;
+pointer p : 0 ;
+int[ 10 ] vec ;
+pointer foo (){;
 };
-int amor : 10 ;
-int main2 (int love ){ lo2ve <- 20 ;
+int main (int amor ,int dor ,int love ){ x <-$ p ;
+ x <-# p ;
 };

@@ -217,6 +217,203 @@ void check_undeclared(){
 	semantic_errors +=hash_check_undeclared();
 }
 
+int check_num_identifier(ast *n){
+	return (n->symbol != 0 && (n->symbol->datatype == DATATYPE_INT || n->symbol->datatype == DATATYPE_CHAR  ) );
+}
+			
+
+int operator_is_num(ast *n){
+
+	return (n->type == AST_ADD ||
+			n->type == AST_SUB ||
+			n->type == AST_MULT ||
+			n->type == AST_DIV ||
+			n->type == AST_PARENTESIS  ||
+			n->type == AST_SYMBOL_INT  ||
+			n->type == AST_SYMBOL_CHAR ||
+			check_num_identifier(n)    ||
+			(n->type == AST_VECTOR && check_num_identifier(n->sons[0]))||
+			(n->type == AST_EXPR_FUNCTION && check_num_identifier(n->sons[0])));
+}
+
+void check_types_num_op(ast *n1, ast *n2,char* op){
+
+	if(n1 == 0 || n2 == 0){
+		if(debug)
+			printf("unexpected problem at check_types_num_op");
+		return;
+	}
+
+	if(!operator_is_num(n1)){
+		printf("ERROR: Left operand of %s is not a number.\n", op);
+		semantic_errors++;
+	}
+	if(!operator_is_num(n2)){
+		printf("ERROR: Right operand of %s is not a number.\n",op);
+		semantic_errors++;
+	}
+
+}
+
+int check_bool_identifier(ast *n){
+	return (n->symbol != 0 && (n->symbol->datatype == DATATYPE_BOOL ));
+}
+
+int operator_is_bool(ast *n){
+
+	return( n->type == AST_LESS ||
+			n->type == AST_GREATER ||
+			n->type == AST_LE||
+			n->type == AST_GE ||
+			n->type == AST_EQ ||
+			n->type == AST_DIF ||
+			n->type == AST_AND ||
+			n->type == AST_OR ||
+			n->type == AST_NEG ||
+			n->type == AST_PARENTESIS  ||
+			n->type == AST_SYMBOL_TRUE  ||
+			n->type == AST_SYMBOL_FALSE ||
+			check_bool_identifier(n)    ||
+			(n->type == AST_VECTOR && check_bool_identifier(n->sons[0]))||
+			(n->type == AST_EXPR_FUNCTION && check_bool_identifier(n->sons[0])));
+}
+
+void check_types_bool_op(ast *n1, ast *n2,char* op){
+
+	if(n1 == 0 || n2 == 0){
+		if(debug)
+			printf("unexpected problem at check_types_num_op");
+		return;
+	}
+
+	if(!operator_is_bool(n1)){
+		printf("ERROR: Left operand of %s is not a boolean.\n", op);
+		semantic_errors++;
+	}
+	if(!operator_is_bool(n2)){
+		printf("ERROR: Right operand of %s is not a boolean.\n",op);
+		semantic_errors++;
+	}
+
+}
+
+
+void check_types_num_bool_op(ast *n1, ast *n2,char* op){
+
+	if(n1 == 0 || n2 == 0){
+		if(debug)
+			printf("unexpected problem at check_types_num_op");
+		return;
+	}
+
+	if( !( (operator_is_bool(n1) && operator_is_bool(n2)) || ((operator_is_num(n1) && operator_is_num(n2))) ) ){
+		printf("ERROR: Invalid operands of %s.\n", op);
+		semantic_errors++;
+	}
+	
+
+}
+
+int check_pointer_identifier(ast *n){
+	return (n->symbol != 0 && (n->symbol->datatype == DATATYPE_POINTER ));
+}
+
+int operator_is_pointer(ast *n){
+
+	return( check_pointer_identifier(n)    ||
+			(n->type == AST_VECTOR && check_pointer_identifier(n->sons[0]))||
+			(n->type == AST_EXPR_FUNCTION && check_pointer_identifier(n->sons[0])));
+}
+
+void check_types_pointer_op(ast *n, char* op){
+
+	if(n == 0 ){
+		if(debug)
+			printf("unexpected problem at check_types_num_op");
+		return;
+	}
+
+	if(!operator_is_pointer(n)){
+		printf("ERROR: Invalid operands of %s.\n", op);
+		semantic_errors++;
+	}
+	
+
+}
+
+
+void check_types(ast *n){
+
+	if(!n)
+		return;
+
+	switch(n->type){
+		case AST_ADD:
+			check_types_num_op(n->sons[0],n->sons[1],"+");
+		break;
+		case AST_SUB:
+			check_types_num_op(n->sons[0],n->sons[1],"-");
+		break;
+		case AST_DIV:
+			check_types_num_op(n->sons[0],n->sons[1],"/");
+		break;
+		case AST_MULT:
+			check_types_num_op(n->sons[0],n->sons[1],"*");
+		break;
+		case AST_LESS:
+			check_types_num_op(n->sons[0],n->sons[1],"<");
+		break;
+		case AST_GREATER:
+			check_types_num_op(n->sons[0],n->sons[1],">");
+		break;
+
+		case AST_LE:
+			check_types_num_op(n->sons[0],n->sons[1],"<=");
+		break;
+
+		case AST_GE:
+			check_types_num_op(n->sons[0],n->sons[1],">=");
+		break;
+
+
+		case AST_OR:
+			check_types_bool_op(n->sons[0],n->sons[1],"|");
+		break;
+
+		case AST_AND:
+			check_types_bool_op(n->sons[0],n->sons[1],"&");
+		break;
+		case AST_NEG:
+			if(!operator_is_bool(n->sons[0])){
+				printf("ERROR: Operand of ~ is not a boolean.\n");
+				semantic_errors++;
+			}
+		break;
+
+		case AST_EQ:
+			check_types_num_bool_op(n->sons[0],n->sons[1],"==");
+		break;
+
+		case AST_DIF:
+			check_types_num_bool_op(n->sons[0],n->sons[1], "!=");
+		break;
+
+		case AST_DOLLAR:
+			check_types_pointer_op(n->sons[0],"$");
+		break;
+
+		case AST_HASHTAG:
+			check_types_pointer_op(n->sons[0], "#");
+		break;
+	}
+
+	for(int i =0;i<NUM_SONS; i++){
+		check_types(n->sons[i]);
+	}
+
+
+}
+
 int get_semantic_errors(){
 
 	return semantic_errors;
