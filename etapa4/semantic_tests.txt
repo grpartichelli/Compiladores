@@ -10,7 +10,7 @@ int foo(int video){
 };
 
 pointer main(int amo){
+	return 1 + 2 + p; 
 	
-
 };
 

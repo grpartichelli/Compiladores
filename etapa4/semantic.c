@@ -1,5 +1,5 @@
 int semantic_errors = 0;
-int debug = 1;
+int debug = 0;
 #include "semantic.h"
 
 
@@ -318,16 +318,10 @@ void check_types_num_bool_op(ast *n1, ast *n2,char* op){
 
 }
 
-int check_pointer_identifier(ast *n){
-	return (n->symbol != 0 && n->type != AST_SYMBOL_INT
-						   && n->type != AST_SYMBOL_CHAR
-						   && n->type != AST_SYMBOL_TRUE
-						   && n->type != AST_SYMBOL_FALSE
-		);
-}
+
 
 int operator_is_identifier(ast *n){
-	printf("%d \n", n->type);
+	
 	
 	if(n==0){
 		return 0;
@@ -343,16 +337,57 @@ int operator_is_identifier(ast *n){
 							 
 }
 
+int num_pointers = 0;
+void check_sub_add(ast *n){
+
+	if(n == 0 ){
+		return;
+	}
+
+	if(n->type == AST_ADD || n->type == AST_SUB){
+		check_sub_add(n->sons[0]);
+		check_sub_add(n->sons[1]); 
+		check_sub_add(n->sons[2]);
+		check_sub_add(n->sons[3]);	
+		return;	
+	} else if( operator_is_pointer(n)){
+		num_pointers++;
+		return;
+	} 
+
+	if(n->type != AST_SYMBOL_INT && n->type != AST_SYMBOL_CHAR)
+		num_pointers -= 1000;
+
+
+}
+
+int check_pointer_identifier(ast *n){
+	
+	return (n->symbol != 0 && n->symbol->datatype == DATATYPE_POINTER
+		);
+}
+
 int operator_is_pointer(ast *n){
+
+	int pointer_check = 0;
+	if(n->type == AST_ADD || n->type == AST_SUB){
+		num_pointers=0;
+		check_sub_add(n);
+		pointer_check = num_pointers == 1;
+		
+	}
+
 	int dollar_check = 0;
 	if(n->type == AST_DOLLAR){
 		dollar_check = operator_is_identifier(n->sons[0]);
 	}
 
-	return( dollar_check ||
-			check_pointer_identifier(n)    ||
+	return( 	check_pointer_identifier(n)    ||
 			(n->type == AST_VECTOR && check_pointer_identifier(n->sons[0]))||
-			(n->type == AST_EXPR_FUNCTION && check_pointer_identifier(n->sons[0])));
+			(n->type == AST_EXPR_FUNCTION && check_pointer_identifier(n->sons[0])) ||
+			dollar_check ||
+			pointer_check 
+			);
 }
 
 void check_types_pointer_op(ast *n, char* op){
@@ -370,25 +405,7 @@ void check_types_pointer_op(ast *n, char* op){
 	
 
 }
-int check_for_pointer(ast *n){
-	
-	if(n == 0 ){
-		return 0;
-	}
-	
-	if( operator_is_pointer(n)){
-		return 1;
-	} 
-	else{ return (check_for_pointer(n->sons[0])  || 
-				check_for_pointer(n->sons[1]) ||
-				check_for_pointer(n->sons[2]) || 
-				check_for_pointer(n->sons[3]) );
-	}
 
-	return -1;
-
-
-}
 
 void check_types_add_sub_op(ast *n1, ast *n2,char* op){
 
@@ -398,19 +415,6 @@ void check_types_add_sub_op(ast *n1, ast *n2,char* op){
 		return;
 	}
 
-	if( !(n1->type == AST_SYMBOL_INT  || n1->type == AST_SYMBOL_CHAR)){
-		if(check_for_pointer(n2)){
-			printf("ERROR: Operand of %s not allowed with pointer.\n",op);
-			semantic_errors++;
-		}
-	}
-
-	if( !(n2->type == AST_SYMBOL_INT  || n2->type == AST_SYMBOL_CHAR)){
-		if(check_for_pointer(n1)){
-			printf("ERROR: Operand of %s not allowed with pointer.\n",op);
-			semantic_errors++;
-		}
-	}
 
 	if(!operator_is_pointer(n1) && !operator_is_pointer(n2)){
 		if(!operator_is_num(n1)){
@@ -426,6 +430,7 @@ void check_types_add_sub_op(ast *n1, ast *n2,char* op){
 }
 
 int compare_types(ast* a, ast*b){
+
 
 	return (operator_is_num(a) && operator_is_num(b)) ||
 	   (operator_is_bool(a) && operator_is_bool(b)) ||
