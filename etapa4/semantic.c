@@ -155,7 +155,7 @@ void ast_function_check_set(ast *n, int kw, ast *list){
 
 		n->symbol->type = SYMBOL_FUNCTION;
 		n->symbol->datatype = get_type_of_keyword(kw);
-
+		n->symbol->parameters = list;
 		//Now the parameters
 		par = list;
 		while(par){
@@ -396,6 +396,41 @@ void check_types_add_sub_op(ast *n1, ast *n2,char* op){
 }
 
 
+int check_func_pars(ast* list1, ast* list2){
+
+	if(list1 == 0 && list2 == 0){
+		return 1;
+	}
+	
+	if(list1 == 0 || list2 == 0){
+
+		return 0;
+
+	}
+
+
+	if(list2->type != AST_FUNC_ARGUMENTS){
+		
+		if((operator_is_num(list1->sons[1]) && operator_is_num(list2)) ||
+	   (operator_is_bool(list1->sons[1]) && operator_is_bool(list2)) ||
+	   (operator_is_pointer(list1->sons[1]) && operator_is_pointer(list2))){
+		
+			return 1 && check_func_pars(list1->sons[2], 0);
+		} 	
+
+	}else{
+
+		if((operator_is_num(list1->sons[1]) && operator_is_num(list2->sons[0])) ||
+	   (operator_is_bool(list1->sons[1]) && operator_is_bool(list2->sons[0])) ||
+	   (operator_is_pointer(list1->sons[1]) && operator_is_pointer(list2->sons[0]))){
+		
+			return 1 && check_func_pars(list1->sons[2], list2->sons[1]);
+		} 	
+	}
+	return 0;
+	
+}
+
 void check_types(ast *n){
 
 	if(!n)
@@ -458,6 +493,22 @@ void check_types(ast *n){
 
 		case AST_HASHTAG:
 			check_types_pointer_op(n->sons[0], "#");
+		break;
+
+		case AST_VECTOR:
+			if(!operator_is_num(n->sons[1])){
+				printf("ERROR: Vector index is not a number.\n");
+				semantic_errors++;
+			}
+		break;
+
+		case AST_EXPR_FUNCTION:
+			if(!check_func_pars(n->sons[0]->symbol->parameters, n->sons[1])){
+				printf("ERROR: Function call %s() has wrong parameters.\n",n->sons[0]->symbol->content);
+				semantic_errors++;
+			}
+				
+
 		break;
 	}
 

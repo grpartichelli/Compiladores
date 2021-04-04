@@ -5,14 +5,13 @@ char c: 'a';
 pointer p: 0;
 int [10] vec;
 
-pointer foo(){
+pointer foo(int video){
 	;
 };
 
-int main(int amor, int dor, int love){
+int main(int amor, char dor, bool love, pointer ps, int lol){
 	
-	x <- 32 + p +20 -20;
-	
+	x <- foo(x);
 
 };
 

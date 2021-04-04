@@ -23,7 +23,7 @@
 
 
 
-struct ast_node;
+struct ast;
 
 typedef struct node
 {
@@ -31,7 +31,7 @@ typedef struct node
 	int datatype;
 	char *content;
 	struct node *next;
-	struct astnode* parameters;
+	struct ast* parameters;
 
 } node;
 
