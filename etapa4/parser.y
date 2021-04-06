@@ -129,7 +129,7 @@ listparameters:
 command:
 	'{' block '}' { $$ = astGenerate(AST_BLOCK,0,$2,0,0,0);}
 	| KW_READ identifier { $$ = astGenerate(AST_READ,0,$2,0,0,0);}
-	| KW_RETURN expr; { $$ = astGenerate(AST_RETURN,0,$2,0,0,0);}
+	| KW_RETURN expr { $$ = astGenerate(AST_RETURN,0,$2,0,0,0);}
 	| assign {$$ = $1;}
 	| KW_PRINT print { $$ = astGenerate(AST_PRINT,0,$2,0,0,0);}
 	| KW_IF '(' expr ')' KW_THEN command { $$ = astGenerate(AST_IF,0,$3,$6,0,0);}
