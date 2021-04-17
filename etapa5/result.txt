@@ -1,9 +1,7 @@
 int x : 300 ;
 int y : 200 ;
-bool boolean : true ;
-char c : 'a' ;
-pointer p : 0 ;
-pointer[ 10 ] vec ;
-int foo (int video ){};
-pointer main (int amo ){return  1 + 2 + p ;
+
+int main (){
+	x <- 10 +20;
+	y <- x + 15 + 30;
 };

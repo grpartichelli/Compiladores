@@ -4,8 +4,11 @@
 #include "ast.h"
 #include "hash.h"
 #include "semantic.h"
+#include "tacs.h"
+#include "gencode.h"
 int getLineNumber();
 int yylex();
+int yyerror();
 FILE* outfile;
 %}
 
@@ -82,8 +85,13 @@ FILE* outfile;
 
 %%
 
-inicio: programa {check_and_set_declarations($1);check_undeclared();check_types($1);astMakeCode($1,outfile);/*astPrint($1,0);*/}
-		;
+inicio: programa {check_and_set_declarations($1);
+check_undeclared();
+check_types($1);
+astMakeCode($1,outfile);
+/*astPrint($1,0);*/
+tacPrintReverse(genCode($1));
+};
 
 programa: 
 	decl ';' programa  {$$ = astGenerate(AST_LST_DECL,0,$1,$3,0,0);}

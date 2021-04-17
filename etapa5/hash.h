@@ -42,5 +42,6 @@ node* putHash(int type, char *content);//Adiciona um nodo a tabela
 int getAddress(char *content); //Devolve o endereço do nodo na hash
 int hash_check_undeclared();
 
+node *makeTemp(void);
 
 #endif

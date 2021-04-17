@@ -31,7 +31,7 @@ int main(int argc, char **argv){
 	FILE *saida;
 
 	if(argc != 3){
-		printf("Número errado de argumentos, chame como ./etapa3 arquivo_de_entrada arquivo_de_saida\n");
+		printf("Número errado de argumentos, chame como ./etapa5 arquivo_de_entrada arquivo_de_saida\n");
 		exit(1);
 	}
 	
@@ -54,7 +54,7 @@ int main(int argc, char **argv){
 
 
 	printf("Número de Linhas: %d\n",getLineNumber());
-	printHash();
+	//printHash();
 
 
 	if(get_semantic_errors()){

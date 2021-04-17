@@ -85,3 +85,13 @@ int hash_check_undeclared(){
 	}
 	return count;
 }
+
+node *makeTemp(void){
+
+	static int serial  = 0;
+	char buffer[256] = "";
+
+	sprintf(buffer, "mYwEEird_emp%d",serial++);
+	return putHash(SYMBOL_VARIABLE,buffer);
+
+}
