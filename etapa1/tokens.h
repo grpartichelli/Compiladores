@@ -35,6 +35,6 @@
 #define LIT_STRING    286
 
 #define TOKEN_ERROR   290
-
+#define KW_TEST 32132
 
 /* END OF FILE */
