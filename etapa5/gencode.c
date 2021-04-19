@@ -42,18 +42,20 @@ tac *genIfThenElse(tac **code){
     labelElse = makeLabel();
     labelEnd = makeLabel();
   
-    tac *tacJump = tacCreate(TAC_JUMP, labelEnd, 0, 0);
-    tacJump->prev = code[1];
-
+    
     tac *tacJumpFalse= tacCreate(TAC_JUMP_IF_FALSE, labelElse, getRes(code[0]), 0);
+    tac *tacJump = tacCreate(TAC_JUMP, labelEnd, 0, 0);
+
     tacJumpFalse->prev = code[0];
+    tacJump->prev = code[1];
 
     tacJoin(tacJumpFalse, tacJump);
 
-    tac *tacLabelEnd = tacCreate(TAC_LABEL,labelEnd, 0, 0);
-    tacLabelEnd->prev = code[2];
 
+    tac *tacLabelEnd = tacCreate(TAC_LABEL,labelEnd, 0, 0);
     tac* tacLabelElse = tacCreate(TAC_LABEL, labelElse, 0, 0);
+
+    tacLabelEnd->prev = code[2];
     tacLabelElse->prev = tacJump;
 
     return tacJoin(tacLabelElse,  tacLabelEnd);
