@@ -13,9 +13,50 @@ tac *genTacSymbol(ast *n){
 	return tacCreate(TAC_SYMBOL,n->symbol,0,0);
 }
 
+tac *genUniOp(int tac_type, tac **code){
+	return tacJoin(code[0], tacCreate(tac_type, makeTemp(), getRes(code[0]), 0));
+}
 
 tac *genBinOp(int tac_type, tac **code){
 	return tacJoin(tacJoin(code[0],code[1]),tacCreate(tac_type,makeTemp(), getRes(code[0]), getRes(code[1])));
+}
+
+
+tac *genIfThen(tac **code){
+	node *newlabel;
+	tac *jump, *label;
+	newlabel = makeLabel();
+
+	jump = tacCreate(TAC_JUMP_IF_FALSE,newlabel,getRes(code[0]),0);
+	jump->prev = code[0];
+
+	label = tacCreate(TAC_LABEL,newlabel,0,0);
+	label->prev = code[1];
+
+	return tacJoin(jump,label);
+}
+
+tac *genIfThenElse(tac **code){
+
+    node* labelElse, *labelEnd;
+    labelElse = makeLabel();
+    labelEnd = makeLabel();
+  
+    tac *tacJump = tacCreate(TAC_JUMP, labelEnd, 0, 0);
+    tacJump->prev = code[1];
+
+    tac *tacJumpFalse= tacCreate(TAC_JUMP_IF_FALSE, labelElse, getRes(code[0]), 0);
+    tacJumpFalse->prev = code[0];
+
+    tacJoin(tacJumpFalse, tacJump);
+
+    tac *tacLabelEnd = tacCreate(TAC_LABEL,labelEnd, 0, 0);
+    tacLabelEnd->prev = code[2];
+
+    tac* tacLabelElse = tacCreate(TAC_LABEL, labelElse, 0, 0);
+    tacLabelElse->prev = tacJump;
+
+    return tacJoin(tacLabelElse,  tacLabelEnd);
 }
 
 tac* genCode(ast *n){
@@ -51,6 +92,13 @@ tac* genCode(ast *n){
 		case AST_GE:		 	result = genBinOp(TAC_GE,code);break;
 		case AST_EQ:		 	result = genBinOp(TAC_EQ,code);break;
 		case AST_DIF:		 	result = genBinOp(TAC_DIF,code);break;
+
+		case AST_NEG: 			result = genUniOp(TAC_NEG,code);break;
+		case AST_DOLLAR: 		result = genUniOp(TAC_DOLLAR,code);break;
+		case AST_HASHTAG: 		result = genUniOp(TAC_HASHTAG,code);break;
+
+		case AST_IF: result = genIfThen(code);break;
+		case AST_IFELSE: result = genIfThenElse(code);break;
 
 		default: result = tacJoin(code[0],tacJoin(code[1],tacJoin(code[2],code[3])));
 

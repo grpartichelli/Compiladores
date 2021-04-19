@@ -37,6 +37,14 @@ void tacPrint(tac *t){
 		case TAC_EQ:		 	printf("TAC_EQ");break;
 		case TAC_DIF:		 	printf("TAC_DIF");break;
 
+		case TAC_NEG: 			printf("TAC_NEG");break;
+		case TAC_DOLLAR: 		printf("TAC_DOLLAR");break;
+		case TAC_HASHTAG: 		printf("TAC_HASHTAG");break;
+
+		case TAC_LABEL: 		printf("TAC_LABEL");break;
+		case TAC_JUMP: 		    printf("TAC_JUMP");break;
+		case TAC_JUMP_IF_FALSE: printf("TAC_JUMP_IF_FALSE");break;
+
 		default: printf("UNKOWN_TAC");break;
 	}
 	

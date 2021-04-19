@@ -18,6 +18,20 @@ pointer main(int amo){
 	p <- 1 <= p; 
 	p <- 1 | p; 
 	p <- 1 & p; 
+
+	p <- ~x; 
+	p <- $y; 
+	p <- #c; 
+
+	if(p + 2) then {
+		x <- 3 + 2;
+	};
+
+	if(2) then {
+		y <- 10 + 20;
+	} else{
+		y <- 10 - 20;
+	};
 	
 };
 

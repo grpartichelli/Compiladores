@@ -15,6 +15,7 @@
 #define SYMBOL_VARIABLE 700
 #define SYMBOL_FUNCTION 800
 #define SYMBOL_VECTOR 900
+#define SYMBOL_LABEL 950
 
 #define DATATYPE_INT 1000
 #define DATATYPE_CHAR 1100
@@ -43,5 +44,6 @@ int getAddress(char *content); //Devolve o endereço do nodo na hash
 int hash_check_undeclared();
 
 node *makeTemp(void);
+node *makeLabel(void);
 
 #endif

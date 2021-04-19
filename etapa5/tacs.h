@@ -19,6 +19,13 @@
 #define TAC_EQ 12
 #define TAC_DIF 13
 
+#define TAC_NEG 14
+#define TAC_HASHTAG 15
+#define TAC_DOLLAR 16
+
+#define TAC_LABEL 17
+#define TAC_JUMP 18
+#define TAC_JUMP_IF_FALSE 19
 
 typedef struct tac{
 	int type;

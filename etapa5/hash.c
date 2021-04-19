@@ -91,7 +91,18 @@ node *makeTemp(void){
 	static int serial  = 0;
 	char buffer[256] = "";
 
-	sprintf(buffer, "mYwEEird_emp%d",serial++);
+	sprintf(buffer, "mYwEEird_temP%d",serial++);
 	return putHash(SYMBOL_VARIABLE,buffer);
+
+}
+
+
+
+node *makeLabel(void){
+	static int serial  = 0;
+	char buffer[256] = "";
+
+	sprintf(buffer, "mYwEEird_labeL%d",serial++);
+	return putHash(SYMBOL_LABEL,buffer);
 
 }
