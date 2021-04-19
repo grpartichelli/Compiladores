@@ -1,7 +1,19 @@
 int x : 300 ;
 int y : 200 ;
-
-int main (){
-	x <- 10 +20;
-	y <- x + 15 + 30;
+bool boolean : true ;
+char c : 'a' ;
+pointer p : 0 ;
+pointer[ 10 ] vec ;
+pointer main (int amo ){ p <- 1 + 2 + p ;
+ p <- 1 - 3 ;
+ p <- 1 * 3 ;
+ p <- 1 / 3 ;
+ p <- 1 < 3 ;
+ p <- 1 > 3 ;
+ p <- 1 == a ;
+ p <- 1 != b ;
+ p <- 1 >= p ;
+ p <- 1 <= p ;
+ p <- 1 | p ;
+ p <- 1 & p ;
 };

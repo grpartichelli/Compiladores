@@ -23,9 +23,20 @@ void tacPrint(tac *t){
 	printf("TAC(");
 
 	switch(t->type){
-		case TAC_SYMBOL: printf("TAC_SYMBOL");break;
-		case TAC_ADD: printf("TAC_ADD"); break;
-		case TAC_SUB: printf("TAC_SUB"); break;
+		case TAC_SYMBOL: 		printf("TAC_SYMBOL");break;
+		case TAC_ADD: 			printf("TAC_ADD"); break;
+		case TAC_SUB: 			printf("TAC_SUB"); break;
+		case TAC_MULT: 			printf("TAC_MULT");break;
+		case TAC_DIV:			printf("TAC_DIV");break;
+		case TAC_LESS:		 	printf("TAC_LESS");break;
+		case TAC_GREATER: 		printf("TAC_GREATER");break;
+		case TAC_OR:		    printf("TAC_OR");break;
+		case TAC_AND:			printf("TAC_AND");break;
+		case TAC_LE:		 	printf("TAC_LE");break;
+		case TAC_GE:		 	printf("TAC_GE");break;
+		case TAC_EQ:		 	printf("TAC_EQ");break;
+		case TAC_DIF:		 	printf("TAC_DIF");break;
+
 		default: printf("UNKOWN_TAC");break;
 	}
 	
