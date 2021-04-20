@@ -61,6 +61,27 @@ tac *genIfThenElse(tac **code){
     return tacJoin(tacLabelElse,  tacLabelEnd);
 }
 
+tac* genWhile(tac **code){
+	node* labelStart, *labelEnd;
+	labelStart = makeLabel();
+    labelEnd = makeLabel();
+
+    tac *tacEnd= tacCreate(TAC_LABEL, labelEnd ,0, 0);
+    tac *tacJumpFalse = tacCreate(TAC_JUMP_IF_FALSE, labelEnd, getRes(code[0]), 0);
+
+    tac *tacStart = tacCreate(TAC_LABEL, labelStart,  0, 0);
+    tac *tacJump = tacCreate(TAC_JUMP, labelStart, 0, 0);
+
+ 
+    tac *t1 = tacJoin(tacStart, code[0]);
+    tac *t2 = tacJoin(t1, tacJumpFalse);
+    tac *t3 = tacJoin(t2, code[1]);
+    tac *t4 = tacJoin(t3, tacJump);
+    return tacJoin(t4, tacEnd);
+
+
+}
+
 tac* genCode(ast *n){
 
 	if(!n)
@@ -101,7 +122,7 @@ tac* genCode(ast *n){
 
 		case AST_IF: result = genIfThen(code);break;
 		case AST_IFELSE: result = genIfThenElse(code);break;
-
+		case AST_WHILE: result = genWhile(code);break;
 		default: result = tacJoin(code[0],tacJoin(code[1],tacJoin(code[2],code[3])));
 
 	}

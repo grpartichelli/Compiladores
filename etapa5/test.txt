@@ -6,6 +6,7 @@ pointer p: 0;
 pointer [10] vec;
 
 pointer main(int amo){
+	/*
 	p <- 1 + 2 + p; 
 	p <- 1 - 3; 
 	p <- 1 * 3;
@@ -33,5 +34,9 @@ pointer main(int amo){
 		y <- 10 - 20;
 	};
 	
+	while(20 - 3){
+		x <- 10 | boolean;
+	};
+	*/
 };
 
