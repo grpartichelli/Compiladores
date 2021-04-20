@@ -78,7 +78,7 @@ int hash_check_undeclared(){
 	for(int i=0;i<TABLE_SIZE;i++){
 		for(n = hash_table[i]; n; n = n->next){
 			if(n->type == SYMBOL_IDENTIFIER ){
-				printf("ERROR: Identifier %s not declared.\n",n->content);
+				//printf("ERROR: Identifier %s not declared.\n",n->content);
 				count++;
 			}
 		}

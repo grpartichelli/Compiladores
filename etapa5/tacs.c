@@ -20,8 +20,11 @@ void tacPrint(tac *t){
 	if(!t)
 		return;
 
-	printf("TAC(");
+	if(t->type == TAC_SYMBOL)
+		return;
 
+	//printf("TAC(");
+	printf("(");
 	switch(t->type){
 		case TAC_SYMBOL: 		printf("TAC_SYMBOL");break;
 		case TAC_ADD: 			printf("TAC_ADD"); break;
@@ -44,6 +47,19 @@ void tacPrint(tac *t){
 		case TAC_LABEL: 		printf("TAC_LABEL");break;
 		case TAC_JUMP: 		    printf("TAC_JUMP");break;
 		case TAC_JUMP_IF_FALSE: printf("TAC_JUMP_IF_FALSE");break;
+
+		case TAC_COPY: printf("TAC_COPY");break;
+		case TAC_COPY_VEC: printf("TAC_COPY_VEC");break;
+
+		case TAC_DECL_VEC_EMPTY: printf("TAC_DECL_VEC_EMPTY");break;
+		case TAC_DECL_VEC: printf("TAC_DECL_VEC");break;
+		case TAC_DECL_VEC_ITEM: printf("TAC_DECL_VEC_ITEM");break;
+
+		case TAC_READ: printf("TAC_READ");break;
+		case TAC_RETURN: printf("TAC_RETURN");break;
+
+		case TAC_PRINT: printf("TAC_PRINT");break;
+		
 
 		default: printf("UNKOWN_TAC");break;
 	}

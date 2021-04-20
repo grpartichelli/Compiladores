@@ -97,12 +97,16 @@ tac* genCode(ast *n){
 
 
 	switch(n->type){	
+
+		//SIMBOLOS
 		case AST_SYMBOL_INT: result = genTacSymbol(n); break;
 		case AST_SYMBOL_CHAR: result = genTacSymbol(n); break;
 		case AST_SYMBOL_TRUE: result = genTacSymbol(n); break;
 		case AST_SYMBOL_FALSE: result = genTacSymbol(n); break;
 		case AST_SYMBOL_IDENTIFIER: result = genTacSymbol(n); break;
 		case AST_SYMBOL_STRING: result = genTacSymbol(n); break;
+
+		//OP BINARIAS
 		case AST_ADD: 			result = genBinOp(TAC_ADD,code);break;
 		case AST_SUB: 			result = genBinOp(TAC_SUB,code);break;
 		case AST_MULT: 			result = genBinOp(TAC_MULT,code);break;
@@ -116,13 +120,58 @@ tac* genCode(ast *n){
 		case AST_EQ:		 	result = genBinOp(TAC_EQ,code);break;
 		case AST_DIF:		 	result = genBinOp(TAC_DIF,code);break;
 
+		//OP UNITARIA
 		case AST_NEG: 			result = genUniOp(TAC_NEG,code);break;
 		case AST_DOLLAR: 		result = genUniOp(TAC_DOLLAR,code);break;
 		case AST_HASHTAG: 		result = genUniOp(TAC_HASHTAG,code);break;
 
+		//COMANDOS
+		case AST_READ: result = tacJoin(code[0],tacCreate(TAC_READ,getRes(code[0]),0,0));
+		break;
+
+		case AST_RETURN: result = tacJoin(code[0],tacCreate(TAC_RETURN,getRes(code[0]),0,0));
+		break;
+
+		case AST_PRINT: 
+		case AST_PRINTLST_STRING:
+		case AST_PRINTLST_EXPR:
+			result = tacJoin(tacJoin(code[0],tacCreate(TAC_PRINT,getRes(code[0]),0,0) ), code[1]);
+		break;
+
+		//CONTROLE DE FLUXO
 		case AST_IF: result = genIfThen(code);break;
 		case AST_IFELSE: result = genIfThenElse(code);break;
 		case AST_WHILE: result = genWhile(code);break;
+
+
+		//ASSINALAMENTO
+		case AST_LEFT_ASSIGN:  result = tacJoin(code[0],tacJoin(code[1], tacCreate(TAC_COPY, getRes(code[0]),  getRes(code[1]), 0)));
+		break;
+        case AST_RIGHT_ASSIGN: result = tacJoin(code[0],tacJoin(code[1], tacCreate(TAC_COPY, getRes(code[1]),  getRes(code[0]), 0)));
+    	break;
+
+    	//ASSINALAMENTO COM VETOR /TAC_COPY_VEC(destino, index, origem)
+    	case AST_LEFT_ASSIGN_VEC:  result = tacJoin(code[0],tacJoin(code[1], tacJoin(code[2] ,tacCreate(TAC_COPY_VEC,getRes(code[0]), getRes(code[1]), getRes(code[2])))));
+    	break;
+    	case AST_RIGHT_ASSIGN_VEC:  result = tacJoin(code[0],tacJoin(code[1], tacJoin(code[2] ,tacCreate(TAC_COPY_VEC, getRes(code[1]), getRes(code[2]),getRes(code[0])))));
+    	break;
+    	
+   		//DECLARA VARIAVEL
+   		case AST_DECL_LIT: result = tacJoin(code[1],tacJoin(code[2], tacCreate(TAC_COPY, getRes(code[1]),  getRes(code[2]), 0)));
+   		break;
+   		//DECLARA VETOR
+   		//TAC_DECL_VEC_EMPTY(nome,tamanho)
+   		case AST_DECL_VEC_EMPTY:  result = tacJoin(code[2],tacJoin(code[1], tacCreate(TAC_DECL_VEC_EMPTY, getRes(code[2]),  getRes(code[1]), 0)));
+   	    break;
+
+   	    //TAC_DECL_VEC(nome,tamanho)
+   	    case AST_DECL_VEC:  result = tacJoin(tacJoin(code[2],tacJoin(code[1], tacCreate(TAC_DECL_VEC, getRes(code[2]),  getRes(code[1]), 0))), code[3]);
+   	    break;
+   	    case AST_LST_VEC1:
+   	    case AST_LST_VEC2:
+   	    	result = tacJoin(tacCreate(TAC_DECL_VEC_ITEM,getRes(code[0]),0,0), code[1]);
+   	    break;
+
 		default: result = tacJoin(code[0],tacJoin(code[1],tacJoin(code[2],code[3])));
 
 	}

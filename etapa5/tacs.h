@@ -27,6 +27,18 @@
 #define TAC_JUMP 18
 #define TAC_JUMP_IF_FALSE 19
 
+#define TAC_COPY 20
+#define TAC_COPY_VEC 21
+
+#define TAC_DECL_VEC_EMPTY 22
+#define TAC_DECL_VEC 23
+#define TAC_DECL_VEC_ITEM 24
+
+#define TAC_READ 25
+#define TAC_RETURN 26
+
+#define TAC_PRINT 27
+
 typedef struct tac{
 	int type;
 	node *res;

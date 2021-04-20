@@ -20,8 +20,8 @@ int get_symbol_type(int type_symbol){
 		case AST_SYMBOL_TRUE: return DATATYPE_BOOL;break;
 		case AST_SYMBOL_FALSE: return DATATYPE_BOOL;break;
 		default: 
-			if(debug)
-				printf("This is a bit unexpected on get_symbol_type\n");
+			//if(debug)
+				// printf("This is a bit unexpected on get_symbol_type\n");
 			return -1;
 		break;
 	}
@@ -38,8 +38,8 @@ int get_type_of_keyword(int kw){
 		case AST_KW_BOOL:  return DATATYPE_BOOL; break;
 		case AST_KW_POINTER: return DATATYPE_POINTER; break;
 		default:
-			if(debug)
-					printf("This is a bit unexpected on get_type_of_keyword\n");
+			//if(debug)
+					// printf("This is a bit unexpected on get_type_of_keyword\n");
 			return -1;
 		break;
 	}
@@ -54,7 +54,7 @@ void ast_decl_lit_check_set(ast *n, int kw, int symbol){
 		return;
 
 	if(n->symbol->type != SYMBOL_IDENTIFIER){
-		printf("ERROR: Identifier %s already declared.\n",n->symbol->content);
+		// printf("ERROR: Identifier %s already declared.\n",n->symbol->content);
 		semantic_errors++;
 	
 	}
@@ -67,8 +67,8 @@ void ast_decl_lit_check_set(ast *n, int kw, int symbol){
 		type_symbol=get_symbol_type(symbol);
 
 		if(type_symbol == -1 || !is_datatype_compatible(n->symbol->datatype,type_symbol)){
-			printf("ERROR: Identifier %s of type %d declared with wrong type %d.\n",
-				n->symbol->content, n->symbol->datatype,type_symbol);
+			// printf("ERROR: Identifier %s of type %d declared with wrong type %d.\n",
+				//n->symbol->content, n->symbol->datatype,type_symbol);
 			semantic_errors++;
 		}
 	}
@@ -84,7 +84,7 @@ void ast_decl_vec_empty_check_set(ast *n, int kw){
 		return;
 
 	if(n->symbol->type != SYMBOL_IDENTIFIER){
-		printf("ERROR: Identifier %s already declared.\n",n->symbol->content);
+		// printf("ERROR: Identifier %s already declared.\n",n->symbol->content);
 		semantic_errors++;
 	
 	}
@@ -107,7 +107,7 @@ void ast_decl_vec_check_set(ast *n, int kw, ast *list){
 		return;
 
 	if(n->symbol->type != SYMBOL_IDENTIFIER){
-		printf("ERROR: Identifier %s already declared.\n",n->symbol->content);
+		// printf("ERROR: Identifier %s already declared.\n",n->symbol->content);
 		semantic_errors++;
 	
 	}
@@ -122,8 +122,8 @@ void ast_decl_vec_check_set(ast *n, int kw, ast *list){
 			type_symbol=get_symbol_type(dec_node->sons[0]->type);
 
 			if(type_symbol == -1 || !is_datatype_compatible(n->symbol->datatype,type_symbol)){
-				printf("ERROR: Identifier %s of type %d declared with wrong type %d.\n",
-					n->symbol->content, n->symbol->datatype,type_symbol);
+				// printf("ERROR: Identifier %s of type %d declared with wrong type %d.\n",
+					//n->symbol->content, n->symbol->datatype,type_symbol);
 				semantic_errors++;
 				return;
 			}
@@ -147,7 +147,7 @@ void ast_function_check_set(ast *n, int kw, ast *list){
 		return;
 
 	if(n->symbol->type != SYMBOL_IDENTIFIER){
-		printf("ERROR: Identifier %s already declared.\n",n->symbol->content);
+		// printf("ERROR: Identifier %s already declared.\n",n->symbol->content);
 		semantic_errors++;
 	
 	}
@@ -163,7 +163,7 @@ void ast_function_check_set(ast *n, int kw, ast *list){
 			kw = par->sons[0]->type;
 
 			if(par->sons[1]->symbol->type != SYMBOL_IDENTIFIER){
-				printf("ERROR: Identifier %s already declared.\n",par->sons[1]->symbol->content);
+				// printf("ERROR: Identifier %s already declared.\n",par->sons[1]->symbol->content);
 				semantic_errors++;
 			}
 			else{
@@ -244,16 +244,16 @@ void check_types_num_op(ast *n1, ast *n2,char* op){
 
 	if(n1 == 0 || n2 == 0){
 		if(debug)
-			printf("unexpected problem at check_types_num_op");
+			// printf("unexpected problem at check_types_num_op");
 		return;
 	}
 
 	if(!operator_is_num(n1)){
-		printf("ERROR: Left operand of %s is not a number.\n", op);
+		// printf("ERROR: Left operand of %s is not a number.\n", op);
 		semantic_errors++;
 	}
 	if(!operator_is_num(n2)){
-		printf("ERROR: Right operand of %s is not a number.\n",op);
+		// printf("ERROR: Right operand of %s is not a number.\n",op);
 		semantic_errors++;
 	}
 
@@ -286,16 +286,16 @@ void check_types_bool_op(ast *n1, ast *n2,char* op){
 
 	if(n1 == 0 || n2 == 0){
 		if(debug)
-			printf("unexpected problem at check_types_num_op");
+			// printf("unexpected problem at check_types_num_op");
 		return;
 	}
 
 	if(!operator_is_bool(n1)){
-		printf("ERROR: Left operand of %s is not a boolean.\n", op);
+		// printf("ERROR: Left operand of %s is not a boolean.\n", op);
 		semantic_errors++;
 	}
 	if(!operator_is_bool(n2)){
-		printf("ERROR: Right operand of %s is not a boolean.\n",op);
+		// printf("ERROR: Right operand of %s is not a boolean.\n",op);
 		semantic_errors++;
 	}
 
@@ -306,12 +306,12 @@ void check_types_num_bool_op(ast *n1, ast *n2,char* op){
 
 	if(n1 == 0 || n2 == 0){
 		if(debug)
-			printf("unexpected problem at check_types_num_op");
+			// printf("unexpected problem at check_types_num_op");
 		return;
 	}
 
 	if( !( (operator_is_bool(n1) && operator_is_bool(n2)) || ((operator_is_num(n1) && operator_is_num(n2))) ) ){
-		printf("ERROR: Invalid operands of %s.\n", op);
+		// printf("ERROR: Invalid operands of %s.\n", op);
 		semantic_errors++;
 	}
 	
@@ -394,12 +394,12 @@ void check_types_pointer_op(ast *n, char* op){
 
 	if(n == 0 ){
 		if(debug)
-			printf("unexpected problem at check_types_num_op");
+			// printf("unexpected problem at check_types_num_op");
 		return;
 	}
 
 	if(!operator_is_pointer(n)){
-		printf("ERROR: Invalid operands of %s.\n", op);
+		// printf("ERROR: Invalid operands of %s.\n", op);
 		semantic_errors++;
 	}
 	
@@ -411,18 +411,18 @@ void check_types_add_sub_op(ast *n1, ast *n2,char* op){
 
 	if(n1 == 0 || n2 == 0){
 		if(debug)
-			printf("unexpected problem at check_types_num_op");
+			// printf("unexpected problem at check_types_num_op");
 		return;
 	}
 
 
 	if(!operator_is_pointer(n1) && !operator_is_pointer(n2)){
 		if(!operator_is_num(n1)){
-			printf("ERROR: Left operand of %s is not a number.\n", op);
+			// printf("ERROR: Left operand of %s is not a number.\n", op);
 			semantic_errors++;
 		}
 		if(!operator_is_num(n2)){
-			printf("ERROR: Right operand of %s is not a number.\n",op);
+			// printf("ERROR: Right operand of %s is not a number.\n",op);
 			semantic_errors++;
 		}
 	}
@@ -473,25 +473,25 @@ void check_returns(ast *n, int type){
 		switch(type){
 			case DATATYPE_INT:
 				if(!operator_is_num(n->sons[0])){
-					printf("Function has invalid return, should be number.\n");
+					// printf("Function has invalid return, should be number.\n");
 					semantic_errors++;
 				}
 			break;
 			case DATATYPE_CHAR:
 				if(!operator_is_num(n->sons[0])){
-					printf("Function has invalid return, should be number.\n");
+					// printf("Function has invalid return, should be number.\n");
 					semantic_errors++;
 				}
 			break;
 			case DATATYPE_POINTER:
 				if(!operator_is_pointer(n->sons[0])){
-					printf("Function has invalid return, should be pointer.\n");
+					// printf("Function has invalid return, should be pointer.\n");
 					semantic_errors++;
 				}
 			break;
 			case DATATYPE_BOOL:
 				if(!operator_is_bool(n->sons[0])){
-					printf("Function has invalid return, should be bool.\n");
+					// printf("Function has invalid return, should be bool.\n");
 					semantic_errors++;
 				}
 			break;
@@ -555,7 +555,7 @@ void check_types(ast *n){
 		break;
 		case AST_NEG:
 			if(!operator_is_bool(n->sons[0])){
-				printf("ERROR: Operand of ~ is not a boolean.\n");
+				// printf("ERROR: Operand of ~ is not a boolean.\n");
 				semantic_errors++;
 			}
 		break;
@@ -578,58 +578,58 @@ void check_types(ast *n){
 
 		case AST_VECTOR:
 			if(!operator_is_num(n->sons[1])){
-				printf("ERROR: Vector index is not a number.\n");
+				// printf("ERROR: Vector index is not a number.\n");
 				semantic_errors++;
 			}
 		break;
 
 		case AST_EXPR_FUNCTION:
 			if(!check_func_pars(n->sons[0]->symbol->parameters, n->sons[1])){
-				printf("ERROR: Function call %s() has wrong parameters.\n",n->sons[0]->symbol->content);
+				// printf("ERROR: Function call %s() has wrong parameters.\n",n->sons[0]->symbol->content);
 				semantic_errors++;
 			}
 		break;		
 		case  AST_IF:
 			if(!operator_is_bool(n->sons[0])){
-					printf("ERROR: If doesn't have a boolean.\n");
+					// printf("ERROR: If doesn't have a boolean.\n");
 					semantic_errors++;
 				}
 		break;
 		case  AST_IFELSE:
 			if(!operator_is_bool(n->sons[0])){
-					printf("ERROR: If Else doesnt have a boolean.\n");
+					// printf("ERROR: If Else doesnt have a boolean.\n");
 					semantic_errors++;
 				}
 		break;
 
 		case  AST_WHILE:
 			if(!operator_is_bool(n->sons[0])){
-					printf("ERROR: While doesnt have a boolean.\n");
+					// printf("ERROR: While doesnt have a boolean.\n");
 					semantic_errors++;
 				}
 		break;
 
 		case AST_LEFT_ASSIGN:
 			if(!compare_types(n->sons[0],n->sons[1])){
-				printf("ERROR: Left assign has different types.\n");
+				// printf("ERROR: Left assign has different types.\n");
 					semantic_errors++;
 			}	
 		break;
 		case AST_RIGHT_ASSIGN:
 			if(!compare_types(n->sons[0],n->sons[1])){
-				printf("ERROR: Right assign has different types.\n");
+				// printf("ERROR: Right assign has different types.\n");
 					semantic_errors++;
 			}	
 		break;
 		
 		case AST_LEFT_ASSIGN_VEC:
 			if(!compare_types(n->sons[0],n->sons[2])){
-				printf("ERROR: Vector left assign has different types.\n");
+				// printf("ERROR: Vector left assign has different types.\n");
 					semantic_errors++;
 			}
 
 			if(operator_is_num(n->sons[1])){
-				printf("ERROR: Vector left assign has non-number index.\n");
+				// printf("ERROR: Vector left assign has non-number index.\n");
 					semantic_errors++;
 			}
 
@@ -637,12 +637,12 @@ void check_types(ast *n){
 		case AST_RIGHT_ASSIGN_VEC:
 
 			if(!compare_types(n->sons[0],n->sons[1])){
-					printf("ERROR: Vector right assign has different types.\n");
+					// printf("ERROR: Vector right assign has different types.\n");
 						semantic_errors++;
 				}
 
 				if(operator_is_num(n->sons[2])){
-					printf("ERROR: Vector right assign has non-number index.\n");
+					// printf("ERROR: Vector right assign has non-number index.\n");
 						semantic_errors++;
 				}
 
