@@ -36,8 +36,15 @@
 
 #define TAC_READ 25
 #define TAC_RETURN 26
-
 #define TAC_PRINT 27
+
+#define TAC_VECTOR 28
+
+#define TAC_FUNC_CALL 29
+#define TAC_FUNC_CALL_ARG 30
+
+#define TAC_FUNC_DECL 31
+#define TAC_FUNC_DECL_ARG 32
 
 typedef struct tac{
 	int type;

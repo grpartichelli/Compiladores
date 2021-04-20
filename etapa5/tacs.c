@@ -57,10 +57,15 @@ void tacPrint(tac *t){
 
 		case TAC_READ: printf("TAC_READ");break;
 		case TAC_RETURN: printf("TAC_RETURN");break;
-
 		case TAC_PRINT: printf("TAC_PRINT");break;
 		
+		case TAC_VECTOR: printf("TAC_VECTOR");break;
 
+		case TAC_FUNC_CALL: printf("TAC_FUNC_CALL");break;
+		case TAC_FUNC_CALL_ARG: printf("TAC_FUNC_CALL_ARG");break;
+
+		case TAC_FUNC_DECL: printf("TAC_FUNC_DECL");break;
+		case TAC_FUNC_DECL_ARG:printf("TAC_FUNC_DECL_ARG");break;
 		default: printf("UNKOWN_TAC");break;
 	}
 	

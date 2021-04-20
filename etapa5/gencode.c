@@ -172,9 +172,42 @@ tac* genCode(ast *n){
    	    	result = tacJoin(tacCreate(TAC_DECL_VEC_ITEM,getRes(code[0]),0,0), code[1]);
    	    break;
 
-		default: result = tacJoin(code[0],tacJoin(code[1],tacJoin(code[2],code[3])));
+   	    //VECTOR SENDO ACESSADO(destino,nome,indice)
+   	    case AST_VECTOR:
+   	    	result = tacJoin(tacJoin(code[0],code[1]),tacCreate(TAC_VECTOR,makeTemp(), getRes(code[0]), getRes(code[1]))); 
+   	    break;
 
-	}
+   	    //FUNÇÃO SENDO CHAMADA
+   	    
+   	    case AST_EXPR_FUNCTION:
+   	    	if(code[1] && code[1]->type != TAC_FUNC_CALL_ARG)
+   	    		result = tacJoin(code[0],tacJoin(tacCreate(TAC_FUNC_CALL_ARG, getRes(code[1]), 0, 0), tacCreate(TAC_FUNC_CALL,  makeTemp(), getRes(code[0]), 0)));
+   	    	else
+   	    		result = tacJoin(code[0],tacJoin(code[1], tacCreate(TAC_FUNC_CALL,  makeTemp(), getRes(code[0]), 0)));
+
+   	    		
+   	    break;
+   	    case AST_FUNC_ARGUMENTS:
+   	    	if(code[1] && code[1]->type != TAC_FUNC_CALL_ARG)
+   	    		result = tacJoin(tacCreate(TAC_FUNC_CALL_ARG, getRes(code[0]), 0, 0), tacCreate(TAC_FUNC_CALL_ARG, getRes(code[1]), 0, 0));
+   	    	else
+   	    		result = tacJoin(tacCreate(TAC_FUNC_CALL_ARG, getRes(code[0]), 0, 0),code[1]);
+   	    		
+   	    break;
+	
+   	    //FUNÇÃO DECLARADA
+   	    case AST_FUNCTION:
+   	    	result = tacJoin(tacJoin(tacJoin(code[1], tacCreate(TAC_FUNC_DECL,getRes(code[1]),0,0)),code[2]),code[3]);
+   	    break; 
+   	    case AST_LST_PAR:
+   	    case AST_LST_PAREND:
+   	    	result = tacJoin(tacJoin(code[1],tacCreate(TAC_FUNC_DECL_ARG,getRes(code[1]),0,0)), code[2]);
+   	    break;
+
+		default: result = tacJoin(code[0],tacJoin(code[1],tacJoin(code[2],code[3])));
+   	    }
+
+	
 
 	return result;
 
